@@ -4,3 +4,7 @@ lib/*
 
 # Ignore any executables
 bin/*
+
+# TODO: generate them in the build folder
+*.pdb
+*.obj

@@ -1,29 +1,63 @@
 {
 	"version": "2.0.0",
 	"tasks": [
+		// {
+		// 	"type": "cppbuild",
+		// 	"label": "C/C++: cl.exe build active file",
+		// 	"command": "cl.exe",
+		// 	"args": [
+		// 		"/Zi",
+		// 		"/EHsc",
+		// 		"/Fe:",
+		// 		"${workspaceFolder}\\build\\state_machine.exe",
+		// 		"${workspaceFolder}\\infrastructure\\state_machine\\src\\state_machine.cpp",
+		// 		"${workspaceFolder}\\infrastructure\\helloworld.cpp",
+		// 		//"-o ${workspaceFolder}\\build\\"
+		// 	],
+		// 	"options": {
+		// 		"cwd": "${workspaceFolder}"
+		// 	},
+		// 	"problemMatcher": [
+		// 		"$msCompile"
+		// 	],
+		// 	"group": {
+		// 		"kind": "build",
+		// 		"isDefault": true
+		// 	},
+		// 	"detail": "compiler: cl.exe",
+		// },
 		{
 			"type": "cppbuild",
-			"label": "C/C++: cl.exe build active file",
-			"command": "cl.exe",
+			"label": "C/C++: g++.exe build active file",
+			"command": "C:\\mingw\\bin\\g++.exe",
 			"args": [
-				"/Zi",
-				"/EHsc",
-				"/Fe:",
-				"${workspaceFolder}\\build\\${fileBasenameNoExtension}.exe",
-				"${workspaceFolder}\\infrastructure\\state_machine\\src\\*.cpp",
-				//"-o ${workspaceFolder}\\build\\"
-			],
+				"${workspaceFolder}\\infrastructure\\state_machine\\src\\state_machine.cpp", "${workspaceFolder}\\infrastructure\\helloworld.cpp", 
+				"-o", "${workspaceFolder}\\build\\state_machine.exe"],
 			"options": {
-				"cwd": "${workspaceFolder}"
+			  "cwd": "${workspaceFolder}"
 			},
-			"problemMatcher": [
-				"$msCompile"
-			],
+			"problemMatcher": ["$gcc"],
 			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
-			"detail": "compiler: cl.exe"
+			  "kind": "build",
+			  "isDefault": true
+			}
+		},
+		{
+		"label": "clean",
+		"type": "shell",
+		"windows": {
+			"command": "del",
+			"args": [
+				"/S /Q",
+				"bin/*",
+				"*.obj",
+				"*.pdb"
+			]
+		},
+		"options": {
+			"cwd": "${workspaceFolder}/src/MyProj/"
+		},
+		"problemMatcher": []
 		}
 	]
 }
