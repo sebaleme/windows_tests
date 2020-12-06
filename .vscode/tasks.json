@@ -31,7 +31,10 @@
 			"label": "C/C++: g++.exe build active file",
 			"command": "C:\\mingw\\bin\\g++.exe",
 			"args": [
-				"${workspaceFolder}\\infrastructure\\state_machine\\src\\state_machine.cpp", "${workspaceFolder}\\infrastructure\\helloworld.cpp", 
+				"${workspaceFolder}\\infrastructure\\state_machine\\src\\state_machine.cpp",
+				"${workspaceFolder}\\infrastructure\\state_machine\\src\\state_init.cpp",
+				"${workspaceFolder}\\infrastructure\\state_machine\\src\\state_run.cpp",
+				"${workspaceFolder}\\infrastructure\\helloworld.cpp", 
 				"-o", "${workspaceFolder}\\build\\state_machine.exe"],
 			"options": {
 			  "cwd": "${workspaceFolder}"
