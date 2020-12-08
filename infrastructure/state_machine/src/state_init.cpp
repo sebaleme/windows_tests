@@ -17,7 +17,7 @@ Cstate_init::Cstate_init(const Cstate_init& copy):
     Cstate{state_list::state_init}
 {};
 
-state_list compute_state(active_event_list f_active_events)
+state_list Cstate_init::compute_state(active_event_list f_active_events)
 {
     state_list state_change_result = state_list::no_change_state;
 

@@ -12,7 +12,7 @@
 Cstate_machine::Cstate_machine()
 {
     m_available_states.insert(std::pair<state_list, std::shared_ptr<Cstate>>(state_list::state_init, std::make_shared<Cstate_init>()));
-    m_available_states.insert(std::pair<state_list, std::shared_ptr<Cstate>>(state_list::state_init, std::make_shared<Cstate_run>()));
+    m_available_states.insert(std::pair<state_list, std::shared_ptr<Cstate>>(state_list::state_run, std::make_shared<Cstate_run>()));
     m_currentState = m_available_states[state_list::state_init];
 }
 

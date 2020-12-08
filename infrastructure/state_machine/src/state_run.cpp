@@ -17,7 +17,7 @@ Cstate_run::Cstate_run(const Cstate_run& copy):
     Cstate{state_list::state_run}
 {};
 
-state_list compute_state(active_event_list f_active_events)
+state_list Cstate_run::compute_state(active_event_list f_active_events)
 {
     state_list state_change_result = state_list::no_change_state;
 
