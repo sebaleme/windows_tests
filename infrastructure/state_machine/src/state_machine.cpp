@@ -11,24 +11,14 @@
 
 Cstate_machine::Cstate_machine()
 {
-    Cstate_init init_object;
-    Cstate_run run_object;
-    m_available_states.insert(std::pair<state_list, Cstate_init>(state_list::state_init, init_object));
-    m_available_states.insert(std::pair<state_list, Cstate_run>(state_list::state_run, run_object));
-    m_currentState = &m_available_states[state_list::state_init];
+    m_available_states.insert(std::pair<state_list, std::shared_ptr<Cstate>>(state_list::state_init, std::make_shared<Cstate_init>()));
+    m_available_states.insert(std::pair<state_list, std::shared_ptr<Cstate>>(state_list::state_init, std::make_shared<Cstate_run>()));
+    m_currentState = m_available_states[state_list::state_init];
 }
 
 void Cstate_machine::update_events()
 {
 
-}
-
-Cstate& Cstate_machine::find_state(state_list f_state_ID)
-{
-    for(Cstate state : m_available_states)
-    {
-        
-    }
 }
 
 void Cstate_machine::run()
@@ -40,7 +30,7 @@ void Cstate_machine::run()
     state_list state_ID = m_currentState->compute_state(m_active_events);
 
     // state update
-    m_currentState = &m_available_states[state_ID];
+    m_currentState = m_available_states[state_ID];
 }
 
 

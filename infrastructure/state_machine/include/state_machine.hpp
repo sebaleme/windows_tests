@@ -8,6 +8,7 @@
 #include <map>
 #include "events.hpp"
 #include "state_base.hpp"
+#include <memory>
 
 class Cstate_machine
 {
@@ -24,10 +25,10 @@ class Cstate_machine
     void update_events();
 
     // Pointer to current state
-    Cstate* m_currentState;
+    std::shared_ptr<Cstate> m_currentState;
 
     // available states are stored in this map
-    std::vector<Cstate> m_available_states;
+    std::map<state_list, std::shared_ptr<Cstate>> m_available_states;
 
     // list of events with their status
     active_event_list m_active_events;
