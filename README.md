@@ -18,3 +18,4 @@ But when I run the command directly with powershell, it works:
 Current solution:
 Build directly with gcc, not using VS code
 
+[When running the program](sebaleme.github.com/windows_tests/illustrations/results.jpg)
