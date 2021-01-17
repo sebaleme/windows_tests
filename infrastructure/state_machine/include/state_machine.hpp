@@ -26,8 +26,14 @@ class Cstate_machine
     void update_events(event_list f_new_event);
 
     private:
+    // update state
+    void update_state();
+
     // Pointer to current state
     std::shared_ptr<Cstate> m_currentState;
+
+    // next state
+    state_list m_nextState;
 
     // available states are stored in this map
     std::map<state_list, std::shared_ptr<Cstate>> m_available_states;

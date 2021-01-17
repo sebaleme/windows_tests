@@ -24,7 +24,8 @@ class Cstate_run : public Cstate
     {};
     
     // run the state machine
-    state_list compute_state(active_event_list f_active_events) override;
+    status compute_state(const active_event_list f_active_events,
+                        state_list& f_target_state) override;
 
     private:
 };

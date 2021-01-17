@@ -9,21 +9,23 @@
 #include "../include/events.hpp"
 
 Cstate_run::Cstate_run():
-    Cstate{state_list::state_run}
+    Cstate{state_list::run}
 {
 };
 
 Cstate_run::Cstate_run(const Cstate_run& copy):
-    Cstate{state_list::state_run}
+    Cstate{state_list::run}
 {};
 
-state_list Cstate_run::compute_state(active_event_list f_active_events)
+status Cstate_run::compute_state(active_event_list f_active_events,
+                                state_list& f_target_state)
 {
-    state_list state_change_result = state_list::no_change_state;
+    status state_change_result = status::no_change_state;
     std::cout << " run ongoing" << std::endl;
     if(true == f_active_events[event_list::run_ended])
     {
-        //state_change_result = state_list::state_post_run;
+        state_change_result = status::change_state_req;
+        f_target_state = state_list::post_run;
     }
 
     return state_change_result;

@@ -10,12 +10,18 @@
 
 #include "events.hpp"
 
-enum class state_list
+enum class state_list : std::uint8_t
+{
+    undefined = 0,
+    init,
+    run,    
+    post_run  
+};
+
+enum class status : std::uint8_t
 {
     no_change_state =0,
-    state_init,
-    state_run,    
-    state_end  
+    change_state_req
 };
 
 class Cstate
@@ -30,7 +36,7 @@ class Cstate
     // the map requires this constuctor
     Cstate()
     {
-        state_ID = state_list::no_change_state;
+        state_ID = state_list::undefined;
     };
 
     // Copy constructor to fill the state_list map
@@ -44,7 +50,8 @@ class Cstate
     };
     
     // run the state machine
-    virtual state_list compute_state(active_event_list f_active_events) =0;
+    virtual status compute_state(const active_event_list f_active_events, 
+                                state_list& f_target_state) =0;
 
     private:
     // class name
