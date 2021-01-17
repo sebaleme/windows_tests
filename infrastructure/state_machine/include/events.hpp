@@ -9,8 +9,9 @@
 #define EVENTS_HPP
 
 #include <map>
+#include <iostream>
 
-enum class event_list
+enum class event_list : uint8_t
 {
     init_ongoing =0,
     init_ended,    

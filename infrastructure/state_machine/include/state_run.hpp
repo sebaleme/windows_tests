@@ -5,6 +5,9 @@
 # @copyright   MIT license
 # ****************************************************************************/
 
+#ifndef STATE_RUN_HPP
+#define STATE_RUN_HPP
+
 #include "state_base.hpp"
 
 class Cstate_run : public Cstate
@@ -25,3 +28,5 @@ class Cstate_run : public Cstate
 
     private:
 };
+
+#endif //STATE_RUN_HPP

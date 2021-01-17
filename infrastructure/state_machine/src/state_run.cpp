@@ -20,7 +20,7 @@ Cstate_run::Cstate_run(const Cstate_run& copy):
 state_list Cstate_run::compute_state(active_event_list f_active_events)
 {
     state_list state_change_result = state_list::no_change_state;
-
+    std::cout << " run ongoing" << std::endl;
     if(true == f_active_events[event_list::run_ended])
     {
         //state_change_result = state_list::state_post_run;

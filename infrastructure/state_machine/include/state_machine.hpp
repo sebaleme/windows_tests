@@ -10,6 +10,9 @@
 #include "state_base.hpp"
 #include <memory>
 
+#ifndef STATE_MACHINE_INCLUDE
+#define STATE_MACHINE_INCLUDE
+
 class Cstate_machine
 {
     public:
@@ -19,11 +22,10 @@ class Cstate_machine
     // Method: run the state machine
     void run();
 
+    //update events
+    void update_events(event_list f_new_event);
 
     private:
-    //update events
-    void update_events();
-
     // Pointer to current state
     std::shared_ptr<Cstate> m_currentState;
 
@@ -33,3 +35,5 @@ class Cstate_machine
     // list of events with their status
     active_event_list m_active_events;
 };
+
+#endif //STATE_MACHINE_INCLUDE

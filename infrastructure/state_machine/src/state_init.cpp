@@ -20,7 +20,7 @@ Cstate_init::Cstate_init(const Cstate_init& copy):
 state_list Cstate_init::compute_state(active_event_list f_active_events)
 {
     state_list state_change_result = state_list::no_change_state;
-
+    std::cout << " Init ongoing" << std::endl;
     if(true == f_active_events[event_list::init_ended])
     {
         state_change_result = state_list::state_run;

@@ -5,8 +5,10 @@
 # @copyright   MIT license
 # ****************************************************************************/
 
-#include "state_base.hpp"
+#ifndef STATE_INIT_HPP
+#define STATE_INIT_HPP
 
+#include "state_base.hpp"
 class Cstate_init : public Cstate
 {
     public:
@@ -25,3 +27,5 @@ class Cstate_init : public Cstate
 
     private:
 };
+
+#endif //STATE_INIT_HPP
