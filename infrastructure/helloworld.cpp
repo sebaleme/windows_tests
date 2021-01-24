@@ -10,12 +10,14 @@
 #include <string>
 #include "state_machine/include/state_machine.hpp"
 #include "state_machine/include/events.hpp"
+#include "smart_pointer/smart_pointer.hpp"
 
 using namespace std;
 
 int main()
 {
-    Cstate_machine sm;
+    //We don t want to have the instance in stack, so let create it in heap 
+    shared_pointer_lsm pSm(new Cstate_machine());
     
     vector<string> msg {"Hello", "C++", "World", "from", "VS Code", "and the C++ extension!"};
 
@@ -30,12 +32,14 @@ int main()
         cout << "run " << i << endl;
         if(i == 3) 
         {
-            sm.update_events(event_list::init_ended);
+            pSm->update_events(event_list::init_ended);
         }
         if(i == 6) 
         {
-            sm.update_events(event_list::run_ended);
+            pSm->update_events(event_list::run_ended);
         }
-        sm.run();
+        pSm->run();
     }
+
+    delete pSm;
 }

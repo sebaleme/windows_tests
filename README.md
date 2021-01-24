@@ -15,6 +15,9 @@ I get the following error with G++ when trying to configure a build task:
 But when I run the command directly with powershell, it works:
  C:/mingw/bin/g++.exe C:/Users/sebal/Documents/repos/windows_tests/infrastructure/state_machine/src/state_machine.cpp C:/Users/sebal/Documents/repos/windows_tests/infrastructure/state_machine/src/state_run.cpp C:/Users/sebal/Documents/repos/windows_tests/infrastructure/state_machine/src/state_init.cpp C:/Users/sebal/Documents/repos/windows_tests/infrastructure/helloworld.cpp -o C:/Users/sebal/Documents/repos/windows_tests/build/state_machine.exe
 
+ On Paris machine:
+  C:\Program Files\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin\g++.exe F:\work\windows_tests\infrastructure\state_machine\src\state_machine.cpp F:\work\windows_tests\infrastructure\state_machine\src\state_run.cpp F:\work\windows_tests\infrastructure\state_machine\src\state_init.cpp F:\work\windows_tests\infrastructure\helloworld.cpp -o F:\work\windows_tests\build\state_machine.exe
+
 Current solution:
 Build directly with gcc, not using VS code
 
