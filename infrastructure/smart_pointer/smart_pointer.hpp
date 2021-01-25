@@ -16,18 +16,24 @@
 // is destroyed.
 class shared_pointer_lsm
 {
+    public:
     shared_pointer_lsm(Cstate_machine* pValue): m_pointer{pValue}
     {
-        
+    
     };
 
     ~shared_pointer_lsm()
     {
         delete m_pointer;
+        std::cout << "Object has been removed: " << std::endl;
     };
 
-    //private:
-
+    Cstate_machine* get()
+    {
+        return m_pointer;
+    };
+    
+    private:
     Cstate_machine* m_pointer;
     std::vector<Cstate_machine*> m_instances;
 

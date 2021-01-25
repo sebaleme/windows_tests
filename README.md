@@ -2,6 +2,7 @@
 Test implementations
 
 Start VS Code from the Developer Command Prompt for Visual Studio, in order to have the proper environment variables set
+Windows: don t forget to add mingw to your PATH in order to avoid having issues with shared libraries (DLL)
 
 
 I get the following error with G++ when trying to configure a build task:

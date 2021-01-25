@@ -32,14 +32,12 @@ int main()
         cout << "run " << i << endl;
         if(i == 3) 
         {
-            pSm->update_events(event_list::init_ended);
+            pSm.get()->update_events(event_list::init_ended);
         }
         if(i == 6) 
         {
-            pSm->update_events(event_list::run_ended);
+            pSm.get()->update_events(event_list::run_ended);
         }
-        pSm->run();
+        pSm.get()->run();
     }
-
-    delete pSm;
 }
