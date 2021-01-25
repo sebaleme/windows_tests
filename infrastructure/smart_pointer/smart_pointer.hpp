@@ -14,11 +14,12 @@
 /// @brief: shared_pointer
 // Basic feature: class with a pointer to the shared object. Object is destroyed when class
 // is destroyed.
+template < typename T > 
 class CSharedPointerLsm
 {
 public:
     // constructor
-    CSharedPointerLsm(Cstate_machine *pValue) :
+    CSharedPointerLsm(T *pValue) :
         m_pointer{pValue},
         m_count{1}
     {
@@ -44,23 +45,18 @@ public:
         }
     };
 
-    Cstate_machine *get()
-    {
-        return m_pointer;
-    };
-
     //Add classic pointer operators
-    Cstate_machine& operator* ()
+    T& operator* ()
     {
         return *m_pointer;
     }
 
-    Cstate_machine* operator-> ()
+    T* operator-> ()
     {    
         return m_pointer;
     }
 private:
-    Cstate_machine *m_pointer;
+    T *m_pointer;
     uint32_t m_count;
     std::vector<CSharedPointerLsm *> m_instances;
 };

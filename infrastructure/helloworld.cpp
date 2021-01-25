@@ -17,7 +17,7 @@ using namespace std;
 int main()
 {
     // We don t want to have the instance in stack, so let create it in heap
-    CSharedPointerLsm pSm(new Cstate_machine());
+    CSharedPointerLsm<Cstate_machine> pSm(new Cstate_machine());
 
     vector<string> msg {"Hello", "C++", "World", "from", "VS Code", "and the C++ extension!"};
 
