@@ -11,21 +11,21 @@
 #include <memory>
 
 #ifndef STATE_MACHINE_INCLUDE
-#define STATE_MACHINE_INCLUDE
+    #define STATE_MACHINE_INCLUDE
 
 class Cstate_machine
 {
-    public:
+public:
     // constructor: initialize the states and the state list
     Cstate_machine();
-    
+
     // Method: run the state machine
     void run();
 
-    //update events
+    // update events
     void update_events(event_list f_new_event);
 
-    private:
+private:
     // update state
     void update_state();
 
@@ -42,4 +42,4 @@ class Cstate_machine
     active_event_list m_active_events;
 };
 
-#endif //STATE_MACHINE_INCLUDE
+#endif // STATE_MACHINE_INCLUDE

@@ -6,37 +6,53 @@
 # ****************************************************************************/
 
 #include <vector>
-//https://www.codeproject.com/Articles/15351/Implementing-a-simple-smart-pointer-in-c
+// https://www.codeproject.com/Articles/15351/Implementing-a-simple-smart-pointer-in-c
 
 #ifndef SMART_POINTER_INCLUDE
-#define SMART_POINTER_INCLUDE
+    #define SMART_POINTER_INCLUDE
 
-///@brief: shared_pointer
+/// @brief: shared_pointer
 // Basic feature: class with a pointer to the shared object. Object is destroyed when class
 // is destroyed.
-class shared_pointer_lsm
+class CSharedPointerLsm
 {
-    public:
-    shared_pointer_lsm(Cstate_machine* pValue): m_pointer{pValue}
+public:
+    // constructor
+    CSharedPointerLsm(Cstate_machine *pValue) :
+        m_pointer{pValue},
+        m_count{1}
     {
-    
+        std::cout << "First pointer instance " << std::endl;
     };
 
-    ~shared_pointer_lsm()
+    //Copy constructor
+    CSharedPointerLsm(const CSharedPointerLsm& SP2) :
+        m_pointer{SP2.m_pointer},
+        m_count{SP2.m_count}
     {
-        delete m_pointer;
-        std::cout << "Object has been removed: " << std::endl;
+        //m_instances.push_back(SP2);
+        std::cout << "This is the " << m_count << " pointer instance " << std::endl;
     };
 
-    Cstate_machine* get()
+    // destructor
+    ~CSharedPointerLsm()
+    {
+        if(--m_count == 0)
+        {
+            delete m_pointer;
+            std::cout << "Object has been removed: " << std::endl;
+        }
+    };
+
+    Cstate_machine *get()
     {
         return m_pointer;
     };
-    
-    private:
-    Cstate_machine* m_pointer;
-    std::vector<Cstate_machine*> m_instances;
 
+private:
+    Cstate_machine *m_pointer;
+    uint32_t m_count;
+    std::vector<Cstate_machine *> m_instances;
 };
 
-#endif  //SMART_POINTER_INCLUDE
+#endif  // SMART_POINTER_INCLUDE
