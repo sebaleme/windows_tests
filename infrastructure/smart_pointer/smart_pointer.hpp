@@ -49,10 +49,20 @@ public:
         return m_pointer;
     };
 
+    //Add classic pointer operators
+    Cstate_machine& operator* ()
+    {
+        return *m_pointer;
+    }
+
+    Cstate_machine* operator-> ()
+    {    
+        return m_pointer;
+    }
 private:
     Cstate_machine *m_pointer;
     uint32_t m_count;
-    std::vector<Cstate_machine *> m_instances;
+    std::vector<CSharedPointerLsm *> m_instances;
 };
 
 #endif  // SMART_POINTER_INCLUDE
