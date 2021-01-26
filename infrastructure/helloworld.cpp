@@ -39,7 +39,8 @@ int main()
 
         if (i == 3)
         {
-            pSm->update_events(event_list::init_ended);
+            // We verify that pSm nd pSm2 are pointing to the same thing
+            pSm2->update_events(event_list::init_ended);
         }
 
         if (i == 6)
