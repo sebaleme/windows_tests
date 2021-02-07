@@ -3,6 +3,8 @@ lib/*
 
 # Ignore any executables
 bin/*
+build/*
+build_cmake/*
 
 # TODO: generate them in the build folder
 *.pdb

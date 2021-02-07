@@ -23,3 +23,4 @@ Current solution:
 Build directly with gcc, not using VS code
 
 [When running the program](sebaleme.github.com/windows_tests/illustrations/results.jpg)
+http://halpernwightsoftware.com/stdlib-scratch/exercises.html
