@@ -8,9 +8,11 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <list>
 #include "state_machine/include/state_machine.hpp"
 #include "state_machine/include/events.hpp"
 #include "smart_pointer/smart_pointer.hpp"
+#include "exercices_diverse/include/containers.hpp"
 
 using namespace std;
 
@@ -49,4 +51,19 @@ int main()
         }
         pSm->run();
     }
+    std::cout << std::endl;
+
+    // Exercice 3.1   Vector and strings
+    std::list<std::string> list = {"eggs","milk","sugar","chocolate","flour"};
+    CVectorStrings vectorStrings;
+    vectorStrings.print();
+    for (std::string item: list)
+    {
+        vectorStrings.addItem(item);
+    }
+    vectorStrings.print();
+    vectorStrings.removeLastItem();
+    vectorStrings.print();
+    vectorStrings.addItem("coffee");
+    vectorStrings.print();
 }
