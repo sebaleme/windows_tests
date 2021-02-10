@@ -7,6 +7,7 @@
 
 #include "containers.hpp"
 
+// Helper functions
 std::ostream& operator<<(std::ostream& f_out, const std::vector<std::string> f_value)
 {
     for (std::string value: f_value)
@@ -16,9 +17,9 @@ std::ostream& operator<<(std::ostream& f_out, const std::vector<std::string> f_v
     return f_out;
 }
 
+// Vector methods
 CVectorStrings::CVectorStrings()
 {
-
 }
 
 void CVectorStrings::addItem(std::string f_item)
@@ -38,8 +39,42 @@ void CVectorStrings::removeItem(std::string f_item)
     m_shoppingList.erase(std::remove(m_shoppingList.begin(), m_shoppingList.end(), f_item), m_shoppingList.end());
 }
 
+void CVectorStrings::replaceItem(std::string f_previousItem, std::string f_nextItem)
+{
+    auto iter = std::find(m_shoppingList.begin(), m_shoppingList.end(), f_previousItem);
+
+    if (iter != m_shoppingList.end())
+    {
+        int index = iter - m_shoppingList.begin();
+        m_shoppingList[index] = f_nextItem;
+    }
+}
+
 void CVectorStrings::print()
 {
     std::cout << "shopping list size: " << m_shoppingList.size() << std::endl;
     std::cout << m_shoppingList << std::endl;
+}
+
+// Map methods
+CMapStrings::CMapStrings()
+{
+}
+
+void CMapStrings::addItem(std::string f_item)
+{
+    // m_shopping_list2.insert(std::pair<int,std::string>(0,f_item));
+}
+
+void CMapStrings::addItem(std::list<std::string> f_items)
+{
+    // for (auto item: f_items)
+    // {
+    //     m_shopping_list2.insert(item);
+    // }
+}
+
+void CMapStrings::removeLastItem()
+{
+    // m_shoppingList.pop_back();
 }

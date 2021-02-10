@@ -54,9 +54,10 @@ int main()
     std::cout << std::endl;
 
     // Exercice 3.1   Vector and strings
-    std::list<std::string> list = {"eggs","milk","sugar","chocolate","flour"};
+    std::list<std::string> list = {"eggs", "milk", "sugar", "chocolate", "flour"};
     CVectorStrings vectorStrings;
     vectorStrings.print();
+
     for (std::string item: list)
     {
         vectorStrings.addItem(item);
@@ -66,4 +67,13 @@ int main()
     vectorStrings.print();
     vectorStrings.addItem("coffee");
     vectorStrings.print();
+    vectorStrings.replaceItem("sugar", "honey");
+    vectorStrings.print();
+    vectorStrings.removeItem("milk");
+    vectorStrings.print();
+
+    // Exercice 4.1   Map and strings
+    CMapStrings mapStrings;
+    // mapStrings.print();
+    // mapStrings.addItem(list);
 }
