@@ -17,6 +17,16 @@ std::ostream& operator<<(std::ostream& f_out, const std::vector<std::string> f_v
     return f_out;
 }
 
+std::ostream& operator<<(std::ostream& f_out, const std::map<int, std::string> f_value)
+{
+    for (auto const& value: f_value)
+    {
+        f_out << value.first << ":" << value.second << " ";
+    }
+    return f_out;
+}
+
+/****************************************************************************************/
 // Vector methods
 CVectorStrings::CVectorStrings()
 {
@@ -56,6 +66,7 @@ void CVectorStrings::print()
     std::cout << m_shoppingList << std::endl;
 }
 
+/***********************************************************************************/
 // Map methods
 CMapStrings::CMapStrings()
 {
@@ -63,18 +74,43 @@ CMapStrings::CMapStrings()
 
 void CMapStrings::addItem(std::string f_item)
 {
-    // m_shopping_list2.insert(std::pair<int,std::string>(0,f_item));
+    m_shoppingList2.insert(std::pair<int, std::string>(m_shoppingList2.size(), f_item));
 }
 
 void CMapStrings::addItem(std::list<std::string> f_items)
 {
-    // for (auto item: f_items)
-    // {
-    //     m_shopping_list2.insert(item);
-    // }
+    for (std::uint32_t i = 0; i < f_items.size(); i++)
+    {
+        auto l_front = f_items.begin();
+        std::advance(l_front, i);
+        m_shoppingList2.insert(std::pair<int, std::string>(i, *l_front));
+    }
 }
 
-void CMapStrings::removeLastItem()
+void CMapStrings::removeItem(std::string f_item)
 {
-    // m_shoppingList.pop_back();
+    for(auto it = m_shoppingList2.begin(); it != m_shoppingList2.end(); it++)
+    {
+        if(it->second == f_item)
+        {
+            m_shoppingList2.erase(it->first);
+        }
+    }
+}
+
+void CMapStrings::replaceItem(std::string f_previousItem, std::string f_nextItem)
+{
+    for(auto it = m_shoppingList2.begin(); it != m_shoppingList2.end(); it++)
+    {
+        if(it->second == f_previousItem)
+        {
+            it->second = f_nextItem;
+        }
+    }
+}
+
+void CMapStrings::print()
+{
+    std::cout << "shopping list size: " << m_shoppingList2.size() << std::endl;
+    std::cout << m_shoppingList2 << std::endl;
 }

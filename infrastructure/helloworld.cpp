@@ -74,6 +74,13 @@ int main()
 
     // Exercice 4.1   Map and strings
     CMapStrings mapStrings;
-    // mapStrings.print();
-    // mapStrings.addItem(list);
+    mapStrings.print();
+    mapStrings.addItem(list);
+    mapStrings.print();
+    mapStrings.addItem("coffee");
+    mapStrings.print();
+    mapStrings.replaceItem("sugar", "honey");
+    mapStrings.print();
+    mapStrings.removeItem("milk");
+    mapStrings.print();    
 }
