@@ -82,5 +82,6 @@ int main()
     mapStrings.replaceItem("sugar", "honey");
     mapStrings.print();
     mapStrings.removeItem("milk");
-    mapStrings.print();    
+    mapStrings.print();
+    std::cout << std::endl; 
 }

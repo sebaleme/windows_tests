@@ -23,3 +23,9 @@ add_executable(
     infrastructure/exercices_diverse/src/containers.cpp
 )
 
+# add the executable
+add_executable(
+    print_list 
+    infrastructure/exercices_diverse/src/print_list.cpp
+)
+
