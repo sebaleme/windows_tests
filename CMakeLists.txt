@@ -29,3 +29,9 @@ add_executable(
     infrastructure/exercices_diverse/src/print_list.cpp
 )
 
+# add the executable
+add_executable(
+    leetcode 
+    infrastructure/exercices_diverse/src/regex_search.cpp
+)
+
