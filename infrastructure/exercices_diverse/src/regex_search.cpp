@@ -18,25 +18,33 @@ public:
     {
 
         int result = 0;
-        regex reg("[0-9]+");
+        regex reg("(\\d+)\\s(\\+|\\-)\\s(\\d+)");
         smatch match;
 
-        if (std::regex_search(s, match, reg))
+        std::regex_search(s, match, reg);
+        cout << "match.length(): " << match.length() << endl;
+        if((match.length() > 0U)&&(match[2].str()== "+"))
         {
-            for (int i = 0; i < match.length(); i++)
-            {
-                cout << match[i];
-            }
+            result = stoi(match[1].str()) + stoi(match[3].str());
         }
-
+        else if((match.length() > 0U)&&(match[2].str()== "-"))
+        {
+            result = stoi(match[1].str()) - stoi(match[3].str());            
+        }
+        // for (std::size_t i = 0; i < match.size(); ++i)
+        // {
+        //     std::string num = match[i].str();
+        //     cout << i << ": " << num << endl;
+        // }
         return result;
     }
 };
 
 int main()
 {
-    string s = "1 + 1";
+    string s = "10 - 8";
     Solution soluce;
     int result = soluce.calculate(s);
+    cout << endl;    
     cout << result << endl;
 }
