@@ -47,6 +47,8 @@
         "typeinfo": "cpp",
         "list": "cpp",
         "bitset": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "cstring": "cpp",
+        "ctime": "cpp"
     }
 }
