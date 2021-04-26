@@ -55,14 +55,14 @@ void CVectorStrings::replaceItem(std::string f_previousItem, std::string f_nextI
 
     if (iter != m_shoppingList.end())
     {
-        int index = iter - m_shoppingList.begin();
+        int index = static_cast<int>(iter - m_shoppingList.begin());
         m_shoppingList[index] = f_nextItem;
     }
 }
 
 void CVectorStrings::print()
 {
-    std::cout << "shopping list size: " << m_shoppingList.size() << std::endl;
+    std::cout << "shopping list size (vector): " << m_shoppingList.size() << std::endl;
     std::cout << m_shoppingList << std::endl;
 }
 
@@ -89,11 +89,14 @@ void CMapStrings::addItem(std::list<std::string> f_items)
 
 void CMapStrings::removeItem(std::string f_item)
 {
-    for(auto it = m_shoppingList2.begin(); it != m_shoppingList2.end(); it++)
+    for(auto it = m_shoppingList2.begin(); it != m_shoppingList2.end(); /* no increment! it++*/)
     {
         if(it->second == f_item)
         {
-            m_shoppingList2.erase(it->first);
+            it = m_shoppingList2.erase(it);  // Possible since C++11
+        }
+        else{
+            ++it;
         }
     }
 }
@@ -111,6 +114,6 @@ void CMapStrings::replaceItem(std::string f_previousItem, std::string f_nextItem
 
 void CMapStrings::print()
 {
-    std::cout << "shopping list size: " << m_shoppingList2.size() << std::endl;
+    std::cout << "shopping list size (map): " << m_shoppingList2.size() << std::endl;
     std::cout << m_shoppingList2 << std::endl;
 }
