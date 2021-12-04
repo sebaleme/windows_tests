@@ -35,3 +35,8 @@ add_executable(
     infrastructure/exercices_diverse/src/regex_search.cpp
 )
 
+# add the executable
+add_executable(
+    leetcode_list 
+    infrastructure/exercices_diverse/src/list_add_numbers.cpp
+)
