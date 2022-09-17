@@ -11,6 +11,7 @@ include_directories(
     infrastructure/state_machine/include
     infrastructure/smart_pointer
     infrastructure/exercices_diverse/include
+    infrastructure/exercices_diverse/inputs
 )
 
 # add the executable
@@ -39,4 +40,10 @@ add_executable(
 add_executable(
     leetcode_list 
     infrastructure/exercices_diverse/src/list_add_numbers.cpp
+)
+
+# add the executable
+add_executable(
+    hackerrank_list
+    infrastructure/exercices_diverse/src/linked_list.cpp
 )

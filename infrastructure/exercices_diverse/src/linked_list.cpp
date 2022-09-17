@@ -22,6 +22,8 @@ struct Node{
    int key;
    Node(Node* p, Node* n, int k, int val):prev(p),next(n),key(k),value(val){};
    Node(int k, int val):prev(NULL),next(NULL),key(k),value(val){};
+
+    ~Node() {cout << "node " << key << " destroyed" << endl;};
 };
 
 class Cache{
@@ -43,6 +45,25 @@ class LRUCache : public Cache
     {
         cp = f_capacity;
         m_currentSize = 0;
+        head = nullptr;
+        tail = nullptr;
+    }
+
+    int getSize() {return m_currentSize;}
+
+    int countNodes() 
+    {
+        int result{0};
+        if(m_currentSize>0)
+        {
+            Node* pointer{head};
+            while(pointer != nullptr)
+            {
+                result++;
+                pointer = pointer->next;
+            }
+        }
+        return result;
     }
 
     void set(int f_key, int f_value) override
@@ -64,7 +85,7 @@ class LRUCache : public Cache
                 // Entry does not exist yet, add it
                 if(m_currentSize<cp)
                 {
-                    Node* newNodeP{new Node(nullptr,head->next,f_key,f_value)};
+                    Node* newNodeP{new Node(nullptr,head,f_key,f_value)};
                     head->prev = newNodeP; // previous first node is now second
                     head = newNodeP;
                     mp[f_key] = newNodeP;
@@ -87,7 +108,8 @@ class LRUCache : public Cache
             }
             else // Move entry to top of the list
             {
-                // Nothing to do if entry was already the first element
+                nodeP->value = f_value;
+                // Nothing else to do if entry was already the first element
                 if(head != nodeP)
                 {
                     // special case if entry was the last element
@@ -139,6 +161,7 @@ int main() {
     std::fstream inputs("C:\\Users\\sebal\\Documents\\repos\\windows_tests\\infrastructure\\exercices_diverse\\inputs\\linked_list.txt", std::ios_base::in);
     //inputs.open("linked_list.txt");
     inputs >> n >> capacity;
+    int line{1};
     LRUCache l(capacity);
     for(i=0;i<n;i++) {
         string command;
@@ -146,12 +169,15 @@ int main() {
         if(command == "get") {
             int key;
             inputs >> key;
-            cout << key << " " << l.get(key) << endl;
+            line++;
+            cout << "line " << line << ", " << l.getSize() << " nodes, (check: " << l.countNodes() << ") GET " << key << " " << l.get(key) << endl;
         }
         else if(command == "set") {
             int key, value;
             inputs >> key >> value;
+            line++;
             l.set(key,value);
+            //cout << "line " << line << ", " << l.getSize() << " nodes, (check: " << l.countNodes() << ") SET " << key << endl;
         }
     }
    return 0;
