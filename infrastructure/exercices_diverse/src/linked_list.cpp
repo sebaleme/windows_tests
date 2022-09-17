@@ -1,7 +1,7 @@
 /* *****************************************************************************
 ##
-# @file        helloworld.cpp
-# @brief       main method
+# @file        linked_list.cpp
+# @brief       https://www.hackerrank.com/challenges/abstract-classes-polymorphism/problem
 # @copyright   MIT license
 # ****************************************************************************/
 
@@ -38,6 +38,7 @@ class Cache{
 
 };
 // Sad that we cannot use smart pointer, can t add memory header at top of the file
+// LRU least recently used
 class LRUCache : public Cache
 {
     public:
@@ -100,7 +101,7 @@ class LRUCache : public Cache
                     tail = tail->prev;
                     delete lastElement;
                     // add new one
-                    Node* newNodeP{new Node(nullptr,head->next,f_key,f_value)};
+                    Node* newNodeP{new Node(nullptr,head,f_key,f_value)};
                     head->prev = newNodeP; // previous first node is now second
                     head = newNodeP;
                     mp[f_key] = newNodeP;
