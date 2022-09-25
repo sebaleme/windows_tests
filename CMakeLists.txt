@@ -38,6 +38,12 @@ add_executable(
 
 # add the executable
 add_executable(
+    leetcode2 
+    infrastructure/exercices_diverse/src/valid_parentheses.cpp
+)
+
+# add the executable
+add_executable(
     leetcode_list 
     infrastructure/exercices_diverse/src/list_add_numbers.cpp
 )
@@ -46,4 +52,10 @@ add_executable(
 add_executable(
     hackerrank_list
     infrastructure/exercices_diverse/src/linked_list.cpp
+)
+
+# add the executable
+add_executable(
+    hackerrank_erase
+    infrastructure/exercices_diverse/src/vector_erase.cpp
 )
