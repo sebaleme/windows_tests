@@ -13,12 +13,19 @@
 using namespace std;
 
 int main() {
-    std::fstream inputs("C:\\Users\\sebal\\Documents\\repos\\windows_tests\\infrastructure\\exercices_diverse\\inputs\\vector_erase.txt", std::ios_base::in);
+    // Please update input file location if working from other PC
+    std::fstream inputs("F:\\work\\windows_tests\\infrastructure\\exercices_diverse\\inputs\\vector_erase_test1.txt", std::ios_base::in);
     // Create vector and fill values
     vector<int> vect{};
     int num{-1}, j{-1};
     inputs >> num;
     
+    if(num == -1)
+    {
+        cout << "file was not read properly" << endl;
+        return -1;
+    }
+
     for (int i=0;i<num;i++)
     {
         inputs >> j;
@@ -29,13 +36,10 @@ int main() {
     inputs >> j;
     int a{0},b{0};
     inputs >> a >> b;
-    
-    // Case element index is included in interval
-    if(j<b) b--;
-    if(j<a) a--;
+
     // All index -1, because given index starts at 1
     vect.erase(vect.begin()+j-1);
-    vect.erase(vect.begin()+a-1,vect.begin()+b);
+    vect.erase(vect.begin()+a-1,vect.begin()+b-1);
     
     // Print results
     cout << vect.size() << endl;
