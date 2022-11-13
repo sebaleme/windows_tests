@@ -31,11 +31,12 @@
 			"label": "C/C++: g++.exe build active file",
 			"command": "C:\\mingw\\bin\\g++.exe",
 			"args": [
-				"${workspaceFolder}\\infrastructure\\state_machine\\src\\state_machine.cpp",
-				"${workspaceFolder}\\infrastructure\\state_machine\\src\\state_init.cpp",
-				"${workspaceFolder}\\infrastructure\\state_machine\\src\\state_run.cpp",
-				"${workspaceFolder}\\infrastructure\\helloworld.cpp", 
-				"-o", "${workspaceFolder}\\build\\state_machine.exe"],
+				"${workspaceFolder}\\infrastructure\\exercices_diverse\\src\\linked_list.cpp",
+				//"${workspaceFolder}\\infrastructure\\state_machine\\src\\state_machine.cpp",
+				// "${workspaceFolder}\\infrastructure\\state_machine\\src\\state_init.cpp",
+				// "${workspaceFolder}\\infrastructure\\state_machine\\src\\state_run.cpp",
+				// "${workspaceFolder}\\infrastructure\\helloworld.cpp", 
+				"-o", "${workspaceFolder}\\build\\hackerrank_list.exe"],
 			"options": {
 			  "cwd": "${workspaceFolder}"
 			},

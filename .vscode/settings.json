@@ -49,6 +49,8 @@
         "bitset": "cpp",
         "regex": "cpp",
         "cstring": "cpp",
-        "ctime": "cpp"
+        "ctime": "cpp",
+        "chrono": "cpp",
+        "shared_mutex": "cpp"
     }
 }

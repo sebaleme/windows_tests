@@ -10,3 +10,6 @@ facebook/build/*
 # TODO: generate them in the build folder
 *.pdb
 *.obj
+
+# Ignore big files
+infrastructure/exercices_diverse/inputs/linked_list.txt
