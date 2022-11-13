@@ -5,6 +5,7 @@ lib/*
 bin/*
 build/*
 build_cmake/*
+facebook/build/*
 
 # TODO: generate them in the build folder
 *.pdb
