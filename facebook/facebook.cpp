@@ -8,42 +8,17 @@
 #include <iostream>
 #include <vector>
 #include <array>
-#include <time.h> 
+#include <time.h>
+#include "include/data_acquisition.hpp"
 
 using namespace std;
-
-static constexpr int NUMBER_OF_PEOPLE = 15;
-
-// Using a vector of pair during runtime, but arrays to store the data
-std::vector<pair<string, int>> s_people;
-std::array<string, NUMBER_OF_PEOPLE> s_peopleArray
-{{
-    "ned", "kathleen", "robb", "Sansa", "bran", "arya", "rickon", "jon", // GT stark
-    "robert", "stannis", "renly", // GT baratheon
-    "tywin", "jaime", "cersei", "joeffrey"  // GT lannister
-}};
-
-std::array<string, 3> s_house =
-{{
-    "stark", "baratheon", "lannister"
-}};
-
-// Results
-std::array<int, NUMBER_OF_PEOPLE> s_houseGT =
-{{
-    0, 0, 0,0,0,0,0,0,1,1,1,2,2,2,2
-}};
 
 void init()
 {
     // Initialize random function
     srand(static_cast<uint32_t>(time(NULL)));
 
-    // Initialize input vector
-    for(int i{0}; i<NUMBER_OF_PEOPLE; i++)
-    {
-        s_people.push_back(make_pair(s_peopleArray[i],s_houseGT[i]));
-    }
+    init_input_data();
 }
 
 string comment(float f_score)
@@ -71,8 +46,9 @@ string comment(float f_score)
 
 int main()
 {
+    cout << "Welcome to a little GoT quizz" << endl;
     init();
-    int indexPeople{rand() % 15};
+    int indexPeople{rand() % static_cast<int>(s_people_with_gt.size())};
     bool wannaPlay{true};
     string answer;
     int score{0}, iteration{0};
@@ -82,15 +58,15 @@ int main()
         iteration++;
 
         // Interaction with user
-        cout << "from which house is " << s_people[indexPeople].first << "?" << endl;
+        cout << "from which house is " << s_people_with_gt[indexPeople].first << "?" << endl;
         cin >> answer;
 
         // Process user response
-        std::array<string, 3>::iterator houseIt;
+        std::vector<string>::iterator houseIt;
         houseIt = find(s_house.begin(), s_house.end(), answer);
         if(houseIt != s_house.end())
         {
-            if(*houseIt == s_house[s_people[indexPeople].second])
+            if(*houseIt == s_house[s_people_with_gt[indexPeople].second])
             {
                 cout << "nice one" << endl;
                 score++;
@@ -106,8 +82,8 @@ int main()
         }
 
         // Prepare next question
-        s_people.erase(s_people.begin() + indexPeople);
-        indexPeople = rand() % (15 - iteration);
+        s_people_with_gt.erase(s_people_with_gt.begin() + indexPeople);
+        indexPeople = rand() % s_people_with_gt.size();
 
         cout << endl << "play again ? y/n" << endl;
         cin >> answer;
@@ -116,7 +92,7 @@ int main()
 
     // Give result
     cout << "================================" << endl;
-    float scoreFloat = (float)score / (float) iteration;
+    float scoreFloat = (float)score / (float)iteration;
     cout << "you got " << score << "/" << iteration << comment(scoreFloat) << endl;
     return 0;
 }
