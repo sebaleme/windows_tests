@@ -14,15 +14,15 @@ string comment(float f_score)
 {
     string result;
 
-    if(f_score == 0.)
+    if(f_score == 0.F)
     {
         result = ", that bad?";
     }
-    else if((f_score > 0.)&&(f_score < 0.5))
+    else if((f_score > 0.F)&&(f_score < .5F))
     {
         result = ", you have a long road to climb";
     }
-    else if((f_score >= 0.5)&&(f_score < 1.0))
+    else if((f_score >= .5F)&&(f_score < 1.F))
     {
         result = ", still need to improve";
     }

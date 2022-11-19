@@ -1,13 +1,12 @@
 /* *****************************************************************************
 ##
-# @file        training_mode.hpp
-# @brief       quizz mode where user can interrupt the test whenever he wants,
-#              unlimited time.
+# @file        test_mode.hpp
+# @brief       challenging quizz mode with permanent score 
 # @copyright   MIT license
 # ****************************************************************************/
 
-#ifndef TRAINING_MODE_HEADER_HPP
-#define TRAINING_MODE_HEADER_HPP
+#ifndef TEST_MODE_HEADER_HPP
+#define TEST_MODE_HEADER_HPP
 
 #include <time.h>
 #include "data_acquisition.hpp"
@@ -15,16 +14,15 @@
 
 using namespace std;
 
-void training_mode(themes f_theme)
+void test_mode(themes f_theme)
 {
     int indexPeople{rand() % static_cast<int>(s_people_with_gt.size())};
-    bool wannaPlay{true};
     string answer;
-    int score{0}, iteration{0};
+    int score{0}, iteration{10};
 
-    while (wannaPlay)
+    while (iteration)
     {
-        iteration++;
+        iteration--;
 
         // Interaction with user
         cout << "from which " << cout_1[static_cast<int>(f_theme)] << " is " << s_people_with_gt[indexPeople].first << "?" << endl;
@@ -53,16 +51,12 @@ void training_mode(themes f_theme)
         // Prepare next question
         s_people_with_gt.erase(s_people_with_gt.begin() + indexPeople);
         indexPeople = rand() % s_people_with_gt.size();
-
-        cout << endl << "play again ? y/n" << endl;
-        cin >> answer;
-        wannaPlay = (answer == "y");
     }
 
     // Give result
     cout << "================================" << endl;
-    float scoreFloat = (float)score / (float)iteration;
-    cout << "you got " << score << "/" << iteration << comment(scoreFloat) << endl;
+    float scoreFloat = (float)score / 10.F;
+    cout << "you got " << score << "/10" << comment(scoreFloat) << endl;
 }
 
-#endif // TRAINING_MODE_HEADER_HPP
+#endif // TEST_MODE_HEADER_HPP
