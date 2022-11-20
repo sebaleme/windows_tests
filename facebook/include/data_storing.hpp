@@ -31,6 +31,7 @@ class CCurrentSession
     void get_credencials();
     void set_duration(int f_duration);
     void updateRecords();
+    void displayScores();
     int get_score();
     void incr_score();
     void store();

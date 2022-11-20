@@ -23,34 +23,29 @@ void display_rules()
     cout << "=========================================" << endl;
 };
 
-QuizzSelection init(int selection)
+void init(themes selection)
 {
-    QuizzSelection result;
     // Initialize random function
     srand(static_cast<uint32_t>(time(NULL)));
 
-    result = init_input_data(selection);
-
-    return result;
+    init_input_data(selection);
 }
 
-int menu()
+themes theme_menu()
 {
-    cout << "please select the topic" << endl;
+    cout << "please select a theme" << endl;
     bool invalidSelection{true};
     int selection{0};
     while(invalidSelection)
     {
         cout << "=========================================" << endl;
-        cout << "0 Quizz rules" << endl;
-        for(int i{1};i<quizz_theme::END;i++)
+        for(int i{0};i<themes::END;i++)
         {
-            cout << i << " " << static_cast<quizz_theme>(i) << endl;
+            cout << i << " " << static_cast<themes>(i) << endl;
         }
-        cout << "5 Quit" << endl;
         cout << "=========================================" << endl;
         cin >> selection;
-        if(selection >= 0 && selection <= quizz_theme::END)
+        if(selection >= 0 && selection <= themes::END)
         {
             invalidSelection = false;
         }
@@ -59,39 +54,74 @@ int menu()
             cout << "enter a valid selection" << endl;
         }
     }
+    return static_cast<themes>(selection);
+}
 
-    return selection;
+quizz_mode mode_menu()
+{
+    cout << "please select a mode" << endl;
+    bool invalidSelection{true};
+    int selection{0};
+    while(invalidSelection)
+    {
+        cout << "=========================================" << endl;
+        for(int i{0};i<quizz_mode::END;i++)
+        {
+            cout << i << " " << static_cast<quizz_mode>(i) << endl;
+        }
+        cout << "=========================================" << endl;
+        cin >> selection;
+        if(selection >= 0 && selection <= quizz_mode::END)
+        {
+            invalidSelection = false;
+        }
+        else
+        {
+            cout << "enter a valid selection" << endl;
+        }
+    }
+    return static_cast<quizz_mode>(selection);
 }
 
 int main()
 {
     cout << "Welcome to a little quizz game" << endl;
-    int selection{0};
-
-    while (selection == 0)
+    themes theme_selection{themes::Invalid};
+    while (theme_selection == themes::Invalid)
     {
-        selection = menu();
-        if(selection==0)
+        theme_selection = theme_menu();
+    }
+    
+    quizz_mode mode_selection{quizz_mode::QUIZZ_RULES};
+    while (mode_selection == quizz_mode::QUIZZ_RULES)
+    {
+        mode_selection = mode_menu();
+        if(mode_selection==quizz_mode::QUIZZ_RULES)
         {
             display_rules();
         }
     }
 
-    if(selection != 5)
+    if(mode_selection != quizz_mode::EXIT)
     {
-        QuizzSelection sessionType{init(selection)};
+        init(theme_selection);
+        CCurrentSession currentSession{theme_selection};
 
-        switch (sessionType.first)
+        switch (mode_selection)
         {
-            case session::TEST:
+            case quizz_mode::TEST:
             {
-                CCurrentSession currentSession{sessionType.second};
                 test_mode(currentSession);
                 break;
             }
-            case session::TRAINING:
+            case quizz_mode::TRAINING:
             {
-                training_mode(sessionType.second);
+                training_mode(theme_selection);
+                break;
+            }
+            case quizz_mode::BEST_SCORES:
+            {
+                currentSession.displayScores();
                 break;
             }
             default:

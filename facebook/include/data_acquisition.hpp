@@ -27,30 +27,59 @@ array<string,2> cout_1{"house","village"};
 array<string,2> cout_2{"GoT","Naruto"};
 
 // Helper function, overloading operator
-ostream& operator<<(ostream& f_out, const quizz_theme f_input)
+ostream& operator<<(ostream& f_out, const quizz_mode f_input)
 {
     const char *s = 0;
 
     switch(f_input)
     {
-        case quizz_theme::GOT_TEST:
+        case quizz_mode::QUIZZ_RULES:
         {
-            s = "GoT Test";
+            s = "Quizz Rules";
             break;
         }
-        case quizz_theme::GOT_TRAINING:
+        case quizz_mode::BEST_SCORES:
         {
-            s = "GoT Training";
+            s = "Best Scores";
             break;
         }
-        case quizz_theme::NARUTO_TEST:
+        case quizz_mode::TRAINING:
         {
-            s = "Naruto Test";
+            s = "Training";
             break;
         }
-        case quizz_theme::NARUTO_TRAINING:
+        case quizz_mode::TEST:
         {
-            s = "Naruto Training";
+            s = "Test";
+            break;
+        }
+        case quizz_mode::EXIT:
+        {
+            s = "Exit";
+            break;
+        }
+        default:
+        {
+            s = "INVALID";
+        }
+    }
+    return f_out << s;
+};
+
+ostream& operator<<(ostream& f_out, const themes f_input)
+{
+    const char *s = 0;
+
+    switch(f_input)
+    {
+        case themes::GoT:
+        {
+            s = "Game Of Thrones";
+            break;
+        }
+        case themes::Naruto:
+        {
+            s = "Naruto";
             break;
         }
         default:
@@ -64,14 +93,10 @@ ostream& operator<<(ostream& f_out, const quizz_theme f_input)
 // interface to access data
 string INPUT_PATH_GOT_1 = "C:\\Users\\lsm1so\\Documents\\workspace\\windows_tests\\facebook\\database\\got_name_house.csv";
 string INPUT_PATH_NARUTO_1 = "C:\\Users\\lsm1so\\Documents\\workspace\\windows_tests\\facebook\\database\\naruto_name_village.csv";
-map<quizz_theme,string> data_in_selection{
-    {quizz_theme::GOT_TRAINING,INPUT_PATH_GOT_1},
-    {quizz_theme::GOT_TEST,INPUT_PATH_GOT_1},
-    {quizz_theme::NARUTO_TRAINING,INPUT_PATH_NARUTO_1},
-    {quizz_theme::NARUTO_TEST,INPUT_PATH_NARUTO_1},
+map<themes,string> data_in_selection{
+    {themes::GoT,INPUT_PATH_GOT_1},
+    {themes::Naruto,INPUT_PATH_NARUTO_1},
 };
-
-using QuizzSelection = pair<session,themes>;
 
 /// @brief print GT information (for debugging purpose)
 void print_GT()
@@ -95,10 +120,9 @@ void print_GT()
 
 /// @brief read CSV and store data into vectors
 ///        2 interfaces are provided, a vector of houses and a vector of pair containing the names and responses 
-QuizzSelection init_input_data(int f_selection)
+void init_input_data(themes f_selection)
 {
-    QuizzSelection result;
-    ifstream fin(data_in_selection[static_cast<quizz_theme>(f_selection)].c_str());
+    ifstream fin(data_in_selection[f_selection].c_str());
 
     if(!fin.good())
     {
@@ -136,12 +160,6 @@ QuizzSelection init_input_data(int f_selection)
         // Update the people list
         s_people_with_gt.push_back(make_pair(name, houseIndex));
     }
-
-    // selection information
-    result.first = (f_selection%2 == 0)? session::TEST : session::TRAINING;
-    result.second = (f_selection <= 2)? themes::GoT : themes::Naruto;
-
-    return result;
 }
 
 #endif // DATA_ACQUISITION_HEADER_HPP
