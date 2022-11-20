@@ -38,4 +38,9 @@ bool operator< (int f_input1, quizz_theme f_input2)
     return f_input1 < static_cast<int>(f_input2);
 };
 
+bool operator<= (int f_input1, quizz_theme f_input2)
+{
+    return f_input1 <= static_cast<int>(f_input2);
+};
+
 #endif // QUIZZ_INTERFACES_HEADER_HPP

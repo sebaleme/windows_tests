@@ -25,7 +25,7 @@ The content of this file is just a draft. The requirements list is just a sum of
 15 The application shall provide a scoring system which evaluates the user performance
 16 The application shall provide a training mode called training session
 17 The application shall provide an exam mode called test session
-18 The application shall not ask twice the same question during the same session
+18 The application shall not ask twice the same question during the current session
 19 The application shall measure the time elapsed for solving the questions during test session
 20 The application shall support different types of quizz
 21 The application shall be available in different languages
