@@ -79,18 +79,19 @@ int main()
 
     if(selection != 5)
     {
-        QuizzSelection currentSession{init(selection)};
+        QuizzSelection sessionType{init(selection)};
 
-        switch (currentSession.first)
+        switch (sessionType.first)
         {
             case session::TEST:
             {
-                test_mode(currentSession.second);
+                CCurrentSession currentSession{sessionType.second};
+                test_mode(currentSession);
                 break;
             }
             case session::TRAINING:
             {
-                training_mode(currentSession.second);
+                training_mode(sessionType.second);
                 break;
             }
             default:

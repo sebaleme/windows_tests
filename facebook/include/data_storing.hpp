@@ -10,14 +10,39 @@
 
 #include <array>
 #include <string>
-#include <sstream>
 #include <fstream>
 #include <iostream>
-#include <map>
 #include <utility>
 #include "quizz_interfaces.hpp"
-	
 
 using namespace std;
+
+struct record
+{
+    string name;
+    int result;
+    int time;
+};
+
+class CCurrentSession
+{
+    public:
+    CCurrentSession(themes f_theme);
+    void get_credencials();
+    void set_duration(int f_duration);
+    void updateRecords();
+    int get_score();
+    void incr_score();
+    void store();
+    void getHistory();
+    themes getTheme();
+
+    private:
+    themes m_theme;
+    record m_record;
+    vector<record> m_records;
+};
+
+
 
 #endif // DATA_STORING_HEADER_HPP

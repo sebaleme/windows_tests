@@ -13,6 +13,7 @@ include_directories(
 
 # add the executable
 add_executable(
-    quizz_app 
+    quizz_app
+    src/data_storing.cpp
     src/quizz_app.cpp
 )

@@ -17,11 +17,11 @@
 
 using namespace std;
 
-void test_mode(themes f_theme)
+void test_mode(CCurrentSession f_currentSession)
 {
     int indexPeople{rand() % static_cast<int>(s_people_with_gt.size())};
     string answer;
-    int score{0}, iteration{10};
+    int iteration{10};
     auto start = std::chrono::system_clock::now();
 
     while (iteration)
@@ -29,7 +29,7 @@ void test_mode(themes f_theme)
         iteration--;
 
         // Interaction with user
-        cout << "from which " << cout_1[static_cast<int>(f_theme)] << " is " 
+        cout << "from which " << cout_1[static_cast<int>(f_currentSession.getTheme())] << " is " 
                 << s_people_with_gt[indexPeople].first << "?" << endl;
         cin >> answer;
 
@@ -41,7 +41,7 @@ void test_mode(themes f_theme)
             if(*houseIt == s_house[s_people_with_gt[indexPeople].second])
             {
                 cout << "nice one" << endl;
-                score++;
+                f_currentSession.incr_score();
             }
             else
             {
@@ -50,8 +50,8 @@ void test_mode(themes f_theme)
         }
         else
         {
-            cout << "wrong, this is not even a " << cout_1[static_cast<int>(f_theme)] << " in " 
-                    << cout_2[static_cast<int>(f_theme)] << endl;
+            cout << "wrong, this is not even a " << cout_1[static_cast<int>(f_currentSession.getTheme())] << " in " 
+                    << cout_2[static_cast<int>(f_currentSession.getTheme())] << endl;
         }
 
         // Prepare next question
@@ -60,12 +60,16 @@ void test_mode(themes f_theme)
     }
     auto end = std::chrono::system_clock::now();
     std::chrono::duration<double> elapsed_seconds = end-start;
+    f_currentSession.set_duration(static_cast<int>(elapsed_seconds.count()));
 
     // Give result
     cout << "================================" << endl;
-    float scoreFloat = (float)score / 10.F;
-    cout << "you got " << score << "/10 in " << std::fixed << std::setprecision(0) 
+    float scoreFloat = (float)f_currentSession.get_score() / 10.F;
+    cout << "you got " << f_currentSession.get_score() << "/10 in " << std::fixed << std::setprecision(0) 
             << elapsed_seconds.count() << "s" << comment(scoreFloat) << endl;
+    // Append new session result in database
+    f_currentSession.updateRecords();
+    f_currentSession.store();
 }
 
 #endif // TEST_MODE_HEADER_HPP

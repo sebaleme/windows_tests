@@ -64,7 +64,7 @@ ostream& operator<<(ostream& f_out, const quizz_theme f_input)
 // interface to access data
 string INPUT_PATH_GOT_1 = "C:\\Users\\lsm1so\\Documents\\workspace\\windows_tests\\facebook\\database\\got_name_house.csv";
 string INPUT_PATH_NARUTO_1 = "C:\\Users\\lsm1so\\Documents\\workspace\\windows_tests\\facebook\\database\\naruto_name_village.csv";
-map<quizz_theme,string> data_selection{
+map<quizz_theme,string> data_in_selection{
     {quizz_theme::GOT_TRAINING,INPUT_PATH_GOT_1},
     {quizz_theme::GOT_TEST,INPUT_PATH_GOT_1},
     {quizz_theme::NARUTO_TRAINING,INPUT_PATH_NARUTO_1},
@@ -98,7 +98,7 @@ void print_GT()
 QuizzSelection init_input_data(int f_selection)
 {
     QuizzSelection result;
-    ifstream fin(data_selection[static_cast<quizz_theme>(f_selection)].c_str());
+    ifstream fin(data_in_selection[static_cast<quizz_theme>(f_selection)].c_str());
 
     if(!fin.good())
     {
