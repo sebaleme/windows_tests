@@ -15,7 +15,7 @@
 #include <iostream>
 #include <map>
 #include <utility>
-//#include "quizz_interfaces.hpp"
+#include "quizz_interfaces.hpp"
 	
 
 using namespace std;
@@ -25,34 +25,6 @@ std::vector<string> s_house;
 
 array<string,2> cout_1{"house","village"};
 array<string,2> cout_2{"GoT","Naruto"};
-
-// list of existing quizz (TEST are even values)
-enum class quizz_theme: uint8_t{
-    GOT_TRAINING = 1U,
-    GOT_TEST = 2U,
-    NARUTO_TRAINING = 3U,
-    NARUTO_TEST = 4U,
-    END,
-};
-
-// existing sessions
-enum class session: uint8_t
-{
-    TRAINING = 0,
-    TEST = 1
-};
-
-// existing themes
-enum class themes: uint8_t
-{
-    GoT = 0,
-    Naruto = 1
-};
-
-bool operator< (int f_input1, quizz_theme f_input2)
-{
-    return f_input1 < static_cast<int>(f_input2);
-};
 
 // Helper function, overloading operator
 ostream& operator<<(ostream& f_out, const quizz_theme f_input)

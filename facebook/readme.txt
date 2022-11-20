@@ -23,12 +23,13 @@ The content of this file is just a draft. The requirements list is just a sum of
 13 The application shall ask a question with multiple answers to the user
 14 The application shall display a picture to be recognized, providing multiple answers to the user
 15 The application shall provide a scoring system which evaluates the user performance
-16 The application shall provide a training mode
-17 The application shall provide an exam mode
+16 The application shall provide a training mode called training session
+17 The application shall provide an exam mode called test session
 18 The application shall not ask twice the same question during the same session
-19 The application shall measure the time elapsed for solving the questions
+19 The application shall measure the time elapsed for solving the questions during test session
 20 The application shall support different types of quizz
+21 The application shall be available in different languages
 
 # Safety and security
-21 The application shall check the validity of the input file
-22 The application shall detect if the provided answer is not valid
+22 The application shall check the validity of the input file
+23 The application shall detect if the provided answer is not valid
