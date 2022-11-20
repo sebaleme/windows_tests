@@ -13,6 +13,6 @@ include_directories(
 
 # add the executable
 add_executable(
-    facebook 
-    facebook.cpp
+    quizz_app 
+    src/quizz_app.cpp
 )

@@ -1,15 +1,15 @@
 /* *****************************************************************************
 ##
-# @file        facebook.cpp
-# @brief       main method. This game maps faces with names and orga positions
+# @file        quizz_app.cpp
+# @brief       main method. This app implements basic games functionalities
 # @copyright   MIT license
 # ****************************************************************************/
 
 #include <iostream>
 #include <vector>
 #include <array>
-#include "include/training_mode.hpp"
-#include "include/test_mode.hpp"
+#include "../include/training_mode.hpp"
+#include "../include/test_mode.hpp"
 
 using namespace std;
 
