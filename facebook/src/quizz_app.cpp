@@ -39,7 +39,7 @@ themes theme_menu()
     while(invalidSelection)
     {
         cout << "=========================================" << endl;
-        for(int i{0};i<themes::END;i++)
+        for(int i{1};i<themes::END;i++)
         {
             cout << i << " " << static_cast<themes>(i) << endl;
         }

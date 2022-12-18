@@ -8,6 +8,7 @@
 #ifndef TEST_MODE_HEADER_HPP
 #define TEST_MODE_HEADER_HPP
 
+#include <cassert>
 #include <time.h>
 #include <chrono>
 #include <iomanip>
@@ -29,6 +30,7 @@ void test_mode(CCurrentSession f_currentSession)
         iteration--;
 
         // Interaction with user
+        assert((void("index is out of bound"), static_cast<int>(f_currentSession.getTheme())<cout_1.size()));
         cout << "from which " << cout_1[static_cast<int>(f_currentSession.getTheme())] << " is " 
                 << s_people_with_gt[indexPeople].first << "?" << endl;
         cin >> answer;

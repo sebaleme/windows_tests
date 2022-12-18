@@ -23,8 +23,8 @@ using namespace std;
 std::vector<pair<string, int>> s_people_with_gt;
 std::vector<string> s_house;
 
-array<string,2> cout_1{"house","village"};
-array<string,2> cout_2{"GoT","Naruto"};
+array<string,3> cout_1{"Invalid","house","village"};
+array<string,3> cout_2{"Invalid","GoT","Naruto"};
 
 // Helper function, overloading operator
 ostream& operator<<(ostream& f_out, const quizz_mode f_input)

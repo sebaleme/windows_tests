@@ -12,6 +12,7 @@
 #include <time.h>
 #include "data_acquisition.hpp"
 #include "quizz_evaluation.hpp"
+#include <cassert>
 
 using namespace std;
 
@@ -27,6 +28,7 @@ void training_mode(themes f_theme)
         iteration++;
 
         // Interaction with user
+        assert((void("index is out of bound"), static_cast<int>(f_theme)<cout_1.size()));
         cout << "from which " << cout_1[static_cast<int>(f_theme)] << " is " << s_people_with_gt[indexPeople].first << "?" << endl;
         cin >> answer;
 

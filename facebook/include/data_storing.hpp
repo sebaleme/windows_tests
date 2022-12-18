@@ -22,6 +22,7 @@ struct record
     string name;
     int result;
     int time;
+    int attempts;
 };
 
 class CCurrentSession
@@ -43,7 +44,5 @@ class CCurrentSession
     record m_record;
     vector<record> m_records;
 };
-
-
 
 #endif // DATA_STORING_HEADER_HPP

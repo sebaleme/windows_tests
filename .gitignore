@@ -13,3 +13,6 @@ facebook/build/*
 
 # Ignore big files
 infrastructure/exercices_diverse/inputs/linked_list.txt
+
+# Ignore vscode config
+.vscode/*

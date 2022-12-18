@@ -27,6 +27,7 @@ CCurrentSession::CCurrentSession(themes f_theme) : m_theme{f_theme}
         cin >> m_record.name;
     }
     m_record.result = 0;
+    m_record.attempts = 0;
     getHistory();
 };
 
@@ -69,6 +70,7 @@ void CCurrentSession::getHistory()
                 if(iter == 0) rec.result = stoi(word);
                 else if (iter == 1) rec.time = stoi(word);
                 else if (iter == 2) rec.name = word;
+                else if (iter == 3) rec.attempts = stoi(word);
                 else cout << "Error during reading records" << endl;
                 iter++;
             }
@@ -94,7 +96,7 @@ void CCurrentSession::store()
     fout.open((data_out_selection[m_theme].c_str()));
     for(auto& rec : m_records)
     {
-        fout << to_string(rec.result) << "," << to_string(rec.time) << "," << rec.name << endl;
+        fout << to_string(rec.result) << "," << to_string(rec.time) << "," << rec.name << "," << rec.attempts << endl;
     }
     fout.close();
 };

@@ -29,6 +29,7 @@ The content of this file is just a draft. The requirements list is just a sum of
 19 The application shall measure the time elapsed for solving the questions during test session
 20 The application shall support different types of quizz
 21 The application shall be available in different languages
+22 The application shall store the player statistics
 
 # Safety and security
 22 The application shall check the validity of the input file
