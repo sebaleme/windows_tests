@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.10)
+
+# set the project name
+project(hanoi_tower)
+
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+include_directories(
+    hanoi_tower/include
+)
+
+# add the executable
+add_executable(
+    hanoi_tower_app
+    src/hanoi_tower_s1.cpp
+)
