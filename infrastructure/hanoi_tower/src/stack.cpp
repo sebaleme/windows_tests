@@ -40,5 +40,15 @@ unsigned Stack::getSize()
     return data.size();
 };
 
+std::ostream& operator<<(std::ostream& stream, const Stack& stack)
+{
+    for (auto& cube : stack.data)
+    {
+        stream << cube << ", ";
+    }
+    stream << std::endl;
+    return stream;
+}
+
 } // namespace hanoi_tower
 

@@ -14,6 +14,8 @@ include_directories(
 # add the executable
 add_executable(
     hanoi_tower_app
+    src/cube.cpp
+    src/game.cpp
     src/hanoi_tower_s1.cpp
     src/stack.cpp
 )

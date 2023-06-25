@@ -1,7 +1,7 @@
 /* *****************************************************************************
 ##
 # @file        stack.hpp
-# @brief       Stack implementation in context of the hanoi tower exercice
+# @brief       Stack of cubes in context of the hanoi tower game
 # @copyright   MIT license
 # ****************************************************************************/
 #ifndef STACK_HPP
@@ -9,6 +9,7 @@
 
 #include <vector>
 #include "cube.hpp"
+#include <iostream>
 
 namespace hanoi_tower
 {
@@ -16,10 +17,14 @@ namespace hanoi_tower
 class Stack
 {
     public:
+    Stack(){};
+    Stack(const Stack& other):data{other.data}{};
     void addTopElement(const Cube& cube);
     Cube removeTopElement();
     Cube& checkTopElement();
     unsigned getSize();
+
+    friend std::ostream& operator<<(std::ostream& stream, const Stack& stack);
     private:
     std::vector<Cube> data;
 };
