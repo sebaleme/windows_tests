@@ -8,11 +8,12 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include_directories(
-    hanoi_tower/include
+    include/hanoi_tower/
 )
 
 # add the executable
 add_executable(
     hanoi_tower_app
     src/hanoi_tower_s1.cpp
+    src/stack.cpp
 )
