@@ -17,8 +17,9 @@ namespace hanoi_tower
 class Game
 {
     public:
-    Game();
+    explicit Game();
     Game(int stack_number, int cube_number);
+    int getStackSize() const;
     void solve();
 
     friend std::ostream& operator<<(std::ostream& stream, const Game& game);
