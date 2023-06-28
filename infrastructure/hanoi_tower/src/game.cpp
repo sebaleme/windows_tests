@@ -80,14 +80,14 @@ bool Game::solve_s1(int& iterations)
 {
     while(stacks.back().getSize() < m_total_cube_num )
     {
-        std::cout << *this << std::endl;
+        //std::cout << *this << std::endl;
         iterations = moveCube(0,1) ? iterations + 1 : iterations;
-        std::cout << *this << std::endl;
+        //std::cout << *this << std::endl;
         iterations = moveCube(0,2) ? iterations + 1 : iterations;
-        std::cout << *this << std::endl;
+        //std::cout << *this << std::endl;
         iterations = moveCube(1,2) ? iterations + 1 : iterations;
 
-        if(iterations > 200) break;
+        if(iterations > 2000) break;
     }
     std::cout << *this << std::endl;
     return rule_success(stacks.back(), m_total_cube_num);
@@ -123,7 +123,7 @@ bool Game::move_s2(int& start, int& end, Stack& source, Stack& target, Stack& sp
     {
         moveCube(source,target);
         iterations++;
-        std::cout << *this << std::endl;
+        //std::cout << *this << std::endl;
     }
     return true;
 }

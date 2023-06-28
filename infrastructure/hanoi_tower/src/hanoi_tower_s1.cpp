@@ -19,4 +19,18 @@ int main()
     result = game2.solve_s2(iterations);
     success = result? "Game solved after " : "Game failed after ";
     std::cout << success << iterations << " iterations with solution 2" << std::endl;
+    std::cout << "===================================" << std::endl << std::endl << std::endl;
+
+    Game game3(3,10);
+    iterations = 0;
+    result = game3.solve_s1(iterations);
+    success = result? "Game solved after " : "Game failed after ";
+    std::cout << success << iterations << " iterations with solution 1" << std::endl;
+    std::cout << "===================================" << std::endl << std::endl << std::endl;
+
+    Game game4(3,10);
+    iterations = 0;
+    result = game4.solve_s2(iterations);
+    success = result? "Game solved after " : "Game failed after ";
+    std::cout << success << iterations << " iterations with solution 2" << std::endl;
 }
