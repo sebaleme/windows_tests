@@ -17,8 +17,6 @@ namespace hanoi_tower
 class Stack
 {
     public:
-    Stack(){};
-    Stack(const Stack& other):data{other.data}{};
     void addTopElement(const Cube& cube);
     Cube removeTopElement();
     Cube& checkTopElement();

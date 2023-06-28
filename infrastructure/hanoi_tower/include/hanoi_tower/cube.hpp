@@ -16,7 +16,6 @@ class Cube
 {
     public:
     Cube(double length):length_{length}{};
-    Cube(const Cube& other):length_{other.getLength()}{};
     double getLength() const {return length_;};
     void setLength(double length) {length_ = length;};
     double getVolume()const{return length_*length_*length_;};

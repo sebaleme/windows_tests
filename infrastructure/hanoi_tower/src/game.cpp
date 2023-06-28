@@ -60,7 +60,23 @@ bool Game::moveCube(int stackID_1, int stackID_2)
     return result;
 }
 
-bool Game::solve(int& iterations)
+bool Game::moveCube(Stack& source, Stack& target)
+{
+    bool result{false};
+    if(rule_1(source, target))
+    {
+        target.addTopElement(source.removeTopElement());
+        result = true;
+    }
+    else if(rule_1(target, source))
+    {
+        source.addTopElement(target.removeTopElement());
+        result = true;
+    }
+    return result;
+}
+
+bool Game::solve_s1(int& iterations)
 {
     while(stacks.back().getSize() < m_total_cube_num )
     {
@@ -75,6 +91,41 @@ bool Game::solve(int& iterations)
     }
     std::cout << *this << std::endl;
     return rule_success(stacks.back(), m_total_cube_num);
+}
+
+bool Game::solve_s2(int& iterations)
+{
+    std::cout << *this << std::endl;
+    int start {0}, end{m_total_cube_num-1}, depth{0};
+    while(stacks.back().getSize() != m_total_cube_num)
+    {
+        move_s2(start, end, stacks[0], stacks.back(), stacks[1], depth, iterations);
+        end--;
+    }
+    std::cout << *this << std::endl;
+    return rule_success(stacks.back(), m_total_cube_num);
+}
+
+bool Game::move_s2(int& start, int& end, Stack& source, Stack& target, Stack& spare, int& depth, int& iterations)
+{
+    if(start != end)
+    {
+        int start_loc =start+1;
+        int depth_loc =depth+1;
+        // Move subTower to the spare stack
+        move_s2(start_loc, end, source, spare, target, depth_loc, iterations);
+        // Move the bigger element to the target
+        move_s2(start, start, source, target, spare, depth_loc, iterations);
+        // Move the subTower from the spare tower to the target
+        move_s2(start_loc, end, spare, target, source, depth_loc, iterations);
+    }
+    else
+    {
+        moveCube(source,target);
+        iterations++;
+        std::cout << *this << std::endl;
+    }
+    return true;
 }
 
 } // namespace hanoi_tower
