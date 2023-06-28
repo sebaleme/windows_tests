@@ -8,5 +8,8 @@ using namespace hanoi_tower;
 int main()
 {
     Game game;
-    game.solve();
+    int iterations{0};
+    bool result = game.solve(iterations);
+    std::string success = result? "Game solved after " : "Game failed after ";
+    std::cout << success << iterations << " iterations" << std::endl;
 }

@@ -44,29 +44,37 @@ int Game::getStackSize() const
     return stacks.size();
 }
 
-void Game::moveCube(int stackID_1, int stackID_2)
+bool Game::moveCube(int stackID_1, int stackID_2)
 {
-        if(rule_1(stacks[stackID_1], stacks[stackID_2]))
-        {
-            stacks[stackID_2].addTopElement(stacks[stackID_1].removeTopElement());
-        }
-        else if(rule_1(stacks[stackID_2], stacks[stackID_1]))
-        {
-            stacks[stackID_1].addTopElement(stacks[stackID_2].removeTopElement());
-        }
+    bool result{false};
+    if(rule_1(stacks[stackID_1], stacks[stackID_2]))
+    {
+        stacks[stackID_2].addTopElement(stacks[stackID_1].removeTopElement());
+        result = true;
+    }
+    else if(rule_1(stacks[stackID_2], stacks[stackID_1]))
+    {
+        stacks[stackID_1].addTopElement(stacks[stackID_2].removeTopElement());
+        result = true;
+    }
+    return result;
 }
 
-void Game::solve()
+bool Game::solve(int& iterations)
 {
     while(stacks.back().getSize() < m_total_cube_num )
     {
         std::cout << *this << std::endl;
-        moveCube(0,1);
+        iterations = moveCube(0,1) ? iterations + 1 : iterations;
         std::cout << *this << std::endl;
-        moveCube(0,2);
+        iterations = moveCube(0,2) ? iterations + 1 : iterations;
         std::cout << *this << std::endl;
-        moveCube(1,2);
+        iterations = moveCube(1,2) ? iterations + 1 : iterations;
+
+        if(iterations > 200) break;
     }
+    std::cout << *this << std::endl;
+    return rule_success(stacks.back(), m_total_cube_num);
 }
 
 } // namespace hanoi_tower

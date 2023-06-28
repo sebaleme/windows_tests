@@ -20,13 +20,13 @@ class Game
     explicit Game();
     Game(int stack_number, int cube_number);
     int getStackSize() const;
-    void solve();
+    bool solve(int& iterations);
 
     friend std::ostream& operator<<(std::ostream& stream, const Game& game);
 
     private:
-    void moveCube(int stackID_1, int stackID_2);
-    int m_total_cube_num{0};
+    bool moveCube(int stackID_1, int stackID_2);
+    int m_total_cube_num;
     std::vector<Stack> stacks;
 };
 

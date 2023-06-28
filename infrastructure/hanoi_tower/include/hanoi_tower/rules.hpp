@@ -27,6 +27,17 @@ bool rule_1(Stack source, Stack dest)
     return result;
 }
 
+bool rule_success(Stack last_stack, int total_cube_num)
+{
+    bool result{false};
+    if(last_stack.getSize() == total_cube_num)
+    {
+        result = true;
+    }
+    
+    return result;
+}
+
 } // namespace hanoi_tower
 
 #endif  // RULES_HPP
