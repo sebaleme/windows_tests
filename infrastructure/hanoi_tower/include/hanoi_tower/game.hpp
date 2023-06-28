@@ -25,6 +25,8 @@ class Game
     friend std::ostream& operator<<(std::ostream& stream, const Game& game);
 
     private:
+    void moveCube(int stackID_1, int stackID_2);
+    int m_total_cube_num{0};
     std::vector<Stack> stacks;
 };
 

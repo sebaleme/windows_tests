@@ -5,13 +5,14 @@
 # @copyright   MIT license
 # ****************************************************************************/
 #include "game.hpp"
+#include "rules.hpp"
 
 namespace hanoi_tower
 {
 
 Game::Game():Game(3, 4){};
 
-Game::Game(int stack_number, int cube_number)
+Game::Game(int stack_number, int cube_number):m_total_cube_num{cube_number}
 {
     for(int i{0}; i< stack_number; i++)
     {
@@ -43,9 +44,29 @@ int Game::getStackSize() const
     return stacks.size();
 }
 
+void Game::moveCube(int stackID_1, int stackID_2)
+{
+        if(rule_1(stacks[stackID_1], stacks[stackID_2]))
+        {
+            stacks[stackID_2].addTopElement(stacks[stackID_1].removeTopElement());
+        }
+        else if(rule_1(stacks[stackID_2], stacks[stackID_1]))
+        {
+            stacks[stackID_1].addTopElement(stacks[stackID_2].removeTopElement());
+        }
+}
+
 void Game::solve()
 {
-    std::cout << stacks.size() << std::endl;
+    while(stacks.back().getSize() < m_total_cube_num )
+    {
+        std::cout << *this << std::endl;
+        moveCube(0,1);
+        std::cout << *this << std::endl;
+        moveCube(0,2);
+        std::cout << *this << std::endl;
+        moveCube(1,2);
+    }
 }
 
 } // namespace hanoi_tower
