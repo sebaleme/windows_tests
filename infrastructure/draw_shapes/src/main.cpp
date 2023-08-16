@@ -49,7 +49,7 @@ ostream& operator<< (ostream& stream, EShapes f_shape)
 class Shape
 {
     public:
-    Shape(EShapes f_shape): m_shape{m_shape}{};
+    Shape(EShapes f_shape): m_shape{f_shape}{};
     virtual void draw(){cout << "I am a shape" << endl;};
     EShapes getType(){return m_shape;};
 
@@ -85,7 +85,7 @@ class Rectangle : public Shape
     int m_width;
 };
 
-void draw(vector<unique_ptr<Shape>> f_shapes)
+void draw(const vector<unique_ptr<Shape>>& f_shapes)
 {
     for(auto& shape : f_shapes)
     {
@@ -93,12 +93,22 @@ void draw(vector<unique_ptr<Shape>> f_shapes)
         {
             case EShapes::circle:
             {
-                static_cast<Circle*>(shape)->draw();
+                static_cast<Circle*>(shape.get())->draw();
                 break;
             }
             case EShapes::square:
             {
-                static_cast<Square*>(shape)->draw();
+                static_cast<Square*>(shape.get())->draw();
+                break;
+            }
+            case EShapes::rectangle:
+            {
+                static_cast<Rectangle*>(shape.get())->draw();
+                break;
+            }
+            default:
+            {
+                shape->draw();
                 break;
             }
         }
