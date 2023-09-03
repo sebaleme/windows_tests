@@ -1,5 +1,6 @@
 # Ignore the build and lib dirs
 lib/*
+fps/external/*
 
 # Ignore any executables
 bin/*
