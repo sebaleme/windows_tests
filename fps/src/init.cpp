@@ -9,7 +9,7 @@
 #include <SDL3/SDL.h>
 #include <stdio.h>
 
-void initSDL(CApplication app)
+void initSDL(CApplication& app)
 {
 	int rendererFlags, windowFlags;
 

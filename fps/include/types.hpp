@@ -16,7 +16,9 @@ static constexpr int32_t SCREEN_HEIGHT{720};
 struct CApplication
 {
    	SDL_Renderer *renderer;
-	SDL_Window *window; 
+	SDL_Window *window;
+	SDL_Texture *texture;
+	uint32_t pixels[SCREEN_WIDTH*SCREEN_HEIGHT];
 };
 
 

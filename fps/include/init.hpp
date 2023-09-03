@@ -10,7 +10,7 @@
 
 #include "types.hpp"
 
-void initSDL(CApplication app);
+void initSDL(CApplication& app);
 
 
 #endif /* FSP_INIT_HPP */
