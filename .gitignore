@@ -7,6 +7,7 @@ build/*
 build_cmake/*
 facebook/build/*
 infrastructure/hanoi_tower/build/*
+fps/build/*
 
 # TODO: generate them in the build folder
 *.pdb
