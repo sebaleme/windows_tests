@@ -24,14 +24,21 @@ int main()
         // Without this, the programm stalls when we interract with the window
         doInput();
         int32_t i{50};
-        while(i<SCREEN_WIDTH*SCREEN_HEIGHT)
-        {
-            app->pixels[i] = 0xFFFF00FF;
-            i += SCREEN_WIDTH;
-        }
+        // Printing a single pixel in purple
+        app->pixels[10 * SCREEN_WIDTH + 5] = 0xFFFF00FF;
 
+        // Printing a all column in purple
+        // while(i<SCREEN_WIDTH*SCREEN_HEIGHT)
+        // {
+        //     app->pixels[i] = 0xFFFF00FF;
+        //     i += SCREEN_WIDTH;
+        // }
+
+        SDL_RenderClear(app->renderer);
         SDL_UpdateTexture(app->texture,NULL,app->pixels,SCREEN_WIDTH*4);
         SDL_RenderTextureRotated(app->renderer,app->texture,NULL,NULL,0.0,NULL,SDL_FLIP_VERTICAL);
+        // SDL_SetRenderDrawColor(app->renderer, 0xFF, 0x00, 0xFF, 0xFF);
+        SDL_RenderPresent(app->renderer);
     }
 
     return 0;
