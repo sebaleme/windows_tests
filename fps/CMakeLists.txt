@@ -16,6 +16,7 @@ add_executable(
     src/main.cpp
     src/init.cpp
     src/input.cpp
+    src/ray_casting.cpp
 )
 
 target_include_directories(fps PUBLIC "${CMAKE_SOURCE_DIR}/external/include" "${CMAKE_SOURCE_DIR}/include")

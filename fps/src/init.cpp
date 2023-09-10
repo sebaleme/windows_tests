@@ -40,4 +40,9 @@ void initSDL(CApplication& app)
 		printf("Failed to create renderer: %s\n", SDL_GetError());
 		exit(1);
 	}
+
+	// Initialize player position
+	app.player.x = 2.F;
+	app.player.y = 6.F;
+	app.player.direction = 0.F;
 }

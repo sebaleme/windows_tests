@@ -6,6 +6,7 @@
 # ****************************************************************************/
 #include "init.hpp"
 #include "input.hpp"
+#include "ray_casting.hpp"
 #include "types.hpp"
 #include <iostream>
 
@@ -23,16 +24,8 @@ int main()
     {
         // Without this, the programm stalls when we interract with the window
         doInput();
-        int32_t i{50};
-        // Printing a single pixel in purple
-        app->pixels[10 * SCREEN_WIDTH + 5] = 0xFFFF00FF;
-
-        // Printing a all column in purple
-        // while(i<SCREEN_WIDTH*SCREEN_HEIGHT)
-        // {
-        //     app->pixels[i] = 0xFFFF00FF;
-        //     i += SCREEN_WIDTH;
-        // }
+        // TODO: Update player position
+        prepare_pixels(app->pixels, app->player, app->map);
 
         SDL_RenderClear(app->renderer);
         SDL_UpdateTexture(app->texture,NULL,app->pixels,SCREEN_WIDTH*4);
