@@ -9,8 +9,9 @@
 #define FSP_INPUT_HPP
 
 #include <SDL3/SDL.h>
+#include <types.hpp>
 
-void doInput(void);
+void doInput(position& f_player);
 
 
 #endif /* FSP_INPUT_HPP */

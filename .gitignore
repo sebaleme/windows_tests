@@ -9,10 +9,13 @@ build_cmake/*
 facebook/build/*
 infrastructure/hanoi_tower/build/*
 fps/build/*
+fps/out/*
+out/*
 
 # TODO: generate them in the build folder
 *.pdb
 *.obj
+*.vs
 
 # Ignore big files
 infrastructure/exercices_diverse/inputs/linked_list.txt

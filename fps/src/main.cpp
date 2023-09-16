@@ -23,8 +23,8 @@ int main()
     while(1)
     {
         // Without this, the programm stalls when we interract with the window
-        doInput();
-        // TODO: Update player position
+        // Process player position according to keyboard inputs
+        doInput(app->player);
         prepare_pixels(app->pixels, app->player, app->map);
 
         SDL_RenderClear(app->renderer);
