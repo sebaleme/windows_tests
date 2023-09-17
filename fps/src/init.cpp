@@ -42,7 +42,7 @@ void initSDL(CApplication& app)
 	}
 
 	// Initialize player position
-	app.player.x = 2.F;
-	app.player.y = 6.F;
+	app.player.x = CELL_SIZE + 2.F;
+	app.player.y = CELL_SIZE + 6.F;
 	app.player.direction = 0.F;
 }

@@ -43,7 +43,6 @@ void construct_map(uint32_t* pixels, uint8_t* map)
             // top left
             int32_t index = (MAP_HEIGHT - 1 - cell_x)*MAP_WIDTH + cell_y;
             pixels[pixel_row*SCREEN_WIDTH + pixel_col] = getColor(map,index,color_modifyer);
-
         }
     }
 }

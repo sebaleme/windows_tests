@@ -42,7 +42,7 @@ struct position
 {
 	float_t x; 			 // metres
 	float_t y;			 // metres
-	float_t direction;   // radian
+	float_t direction;   // degree
 };
 
 struct CApplication
