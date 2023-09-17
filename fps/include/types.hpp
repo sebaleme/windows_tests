@@ -9,14 +9,20 @@
 #define FSP_TYPES_HPP
 
 #include <SDL3/SDL.h>
-
-// Screen resolution
-static constexpr int32_t SCREEN_WIDTH{1280};
-static constexpr int32_t SCREEN_HEIGHT{720};
+#include "colors.hpp"
 
 // Map size
 static constexpr int8_t MAP_WIDTH{8};
 static constexpr int8_t MAP_HEIGHT{8};
+// Cell size
+static constexpr int32_t CELL_SIZE{50};
+
+// Screen resolution
+static constexpr int32_t SCREEN_WIDTH{MAP_WIDTH*CELL_SIZE};
+static constexpr int32_t SCREEN_HEIGHT{MAP_HEIGHT*CELL_SIZE};
+
+// Player size
+static constexpr int32_t CURSOR_SIZE{8};
 
 // View definition
 // Objects are 2m high
@@ -30,6 +36,8 @@ static constexpr float_t HEIGHT_CEILING{2.F}; // meter
 static constexpr float_t HORIZONTAL_RES{HORIZONTAL_FOV/SCREEN_WIDTH}; // degree per pixel
 static constexpr float_t VERTICAL_RES{VERTICAL_FOV/SCREEN_HEIGHT}; // degree per pixel
 
+// X is horizontal, Y is vertical
+// (0,0) is bottom left
 struct position
 {
 	float_t x; 			 // metres
@@ -52,8 +60,8 @@ struct CApplication
 	{
 		1,1,1,1,1,1,1,1,
 		1,0,0,0,0,0,0,1,
-		1,0,0,0,3,0,0,1,
-		1,0,0,0,3,3,0,1,
+		1,0,0,0,2,0,0,1,
+		1,0,0,0,2,2,0,1,
 		1,0,0,0,0,0,0,1,
 		1,0,0,0,0,0,0,1,
 		1,0,2,0,0,0,0,1,

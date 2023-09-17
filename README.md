@@ -22,3 +22,6 @@ Once cmake and Visual Studio are installed, follow these steps:
 [When running the program](sebaleme.github.com/windows_tests/illustrations/results.jpg)
 
 http://halpernwightsoftware.com/stdlib-scratch/exercises.html
+
+Usefull:
+anmeldeinformationsverwaltung

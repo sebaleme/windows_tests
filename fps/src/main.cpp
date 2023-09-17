@@ -7,6 +7,7 @@
 #include "init.hpp"
 #include "input.hpp"
 #include "ray_casting.hpp"
+#include "map_rendering.hpp"
 #include "types.hpp"
 #include <iostream>
 
@@ -25,6 +26,7 @@ int main()
         // Without this, the programm stalls when we interract with the window
         // Process player position according to keyboard inputs
         doInput(app->player);
+        construct_map(app->pixels, app->map);
         prepare_pixels(app->pixels, app->player, app->map);
 
         SDL_RenderClear(app->renderer);
