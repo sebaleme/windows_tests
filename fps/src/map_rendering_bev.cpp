@@ -1,10 +1,10 @@
 /* *****************************************************************************
 ##
-# @file        map_rendering.cpp
+# @file        map_rendering_bev.cpp
 # @brief       rendering of map, BEV
 # @copyright   MIT license
 # ****************************************************************************/
-#include "ray_casting.hpp"
+#include "map_rendering_bev.hpp"
 #include "types.hpp"
 #include <math.h>
 #include <algorithm>

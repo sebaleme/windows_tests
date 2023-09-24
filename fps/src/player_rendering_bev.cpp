@@ -1,10 +1,10 @@
 /* *****************************************************************************
 ##
-# @file        ray_casting.cpp
-# @brief       rendering of the 3D scene
+# @file        player_rendering_bev.cpp
+# @brief       rendering of the player position on the 2D map
 # @copyright   MIT license
 # ****************************************************************************/
-#include "ray_casting.hpp"
+#include "player_rendering_bev.hpp"
 #include "types.hpp"
 #include <math.h>
 #include <algorithm>

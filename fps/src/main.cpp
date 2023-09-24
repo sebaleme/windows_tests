@@ -6,8 +6,8 @@
 # ****************************************************************************/
 #include "init.hpp"
 #include "input.hpp"
-#include "ray_casting.hpp"
-#include "map_rendering.hpp"
+#include "player_rendering_bev.hpp"
+#include "map_rendering_bev.hpp"
 #include "types.hpp"
 #include <iostream>
 
