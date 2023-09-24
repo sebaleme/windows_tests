@@ -15,10 +15,10 @@ int pixel_index(int pos_x, int pos_y)
 }
 
 
-EOrientation compute_quadrant(position player)
+EOrientation computeGeneralDirection(const StatePlayer& player)
 {
     EOrientation result{EOrientation::invalid};
-    float_t& angle = player.orientation;
+    const float_t& angle = player.orientation;
     if((angle >= 112.5F)&&(angle < 157.5F ))
     {
         result = EOrientation::North_West;
@@ -76,14 +76,14 @@ bool main_square_tilted(EOrientation quadrant)
 }
 
 // The player display has 8 possible positions
-void update_player_position(uint32_t* pixels, position player, uint8_t* map)
+void update_player_position(uint32_t* pixels, const StatePlayer player, uint8_t* map)
 {
     // Ignore position requests if outside of screen
-    int32_t pos_x = std::clamp(static_cast<int32_t>(player.x), 0, SCREEN_WIDTH);
-    int32_t pos_y = std::clamp(static_cast<int32_t>(player.y), 0, SCREEN_HEIGHT);
+    int32_t pos_x = static_cast<int32_t>(player.x);
+    int32_t pos_y = static_cast<int32_t>(player.y);
 
     // Player orientation
-    EOrientation quadrant = compute_quadrant(player);
+    EOrientation quadrant = computeGeneralDirection(player);
 
     // Printing the player position as a main square
     if(main_square_tilted(quadrant))

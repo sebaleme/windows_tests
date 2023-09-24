@@ -39,7 +39,7 @@ static constexpr float_t VERTICAL_RES{VERTICAL_FOV/SCREEN_HEIGHT}; // degree per
 
 // X is horizontal, Y is vertical
 // (0,0) is bottom left
-struct position
+struct StatePlayer
 {
 	float_t x; 			 // metres
 	float_t y;			 // metres
@@ -54,7 +54,7 @@ struct CApplication
 	SDL_Window *window;
 	SDL_Texture *texture;
 	uint32_t pixels[SCREEN_WIDTH*SCREEN_HEIGHT];
-	position player;
+	StatePlayer player;
 
 	// 0 means empty, else an object
 	// each value is represented through a color

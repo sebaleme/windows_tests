@@ -20,6 +20,11 @@ int32_t getColor(uint8_t* map, int32_t index ,bool f_color_modifyer)
     return color;
 }
 
+int32_t computeCellIndex(int32_t cell_row, int32_t cell_column)
+{
+    return (MAP_HEIGHT - 1 - cell_row)*MAP_WIDTH + cell_column;
+}
+
 
 void construct_map(uint32_t* pixels, uint8_t* map)
 {
@@ -41,7 +46,7 @@ void construct_map(uint32_t* pixels, uint8_t* map)
             }
             // The pixels array starts from bottom left, whereas the map definition starts from
             // top left
-            int32_t index = (MAP_HEIGHT - 1 - cell_x)*MAP_WIDTH + cell_y;
+            int32_t index = computeCellIndex(cell_x,cell_y);
             pixels[pixel_row*SCREEN_WIDTH + pixel_col] = getColor(map,index,color_modifyer);
         }
     }

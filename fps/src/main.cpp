@@ -25,7 +25,7 @@ int main()
     {
         // Without this, the programm stalls when we interract with the window
         // Process player position according to keyboard inputs
-        doInput(app->player);
+        doInput(app->player, app->map);
         construct_map(app->pixels, app->map);
         update_player_position(app->pixels, app->player, app->map);
 
