@@ -43,6 +43,8 @@ void initSDL(CApplication& app)
 
 	// Initialize player position
 	app.player.x = CELL_SIZE + 2.F;
-	app.player.y = CELL_SIZE + 6.F;
-	app.player.direction = 0.F;
+	app.player.y = CELL_SIZE + 2.F;
+	app.player.radius = static_cast<float_t>(app.player.x*app.player.x + app.player.y*app.player.y);
+	app.player.orientation = 0.F;
+	printf("Init done; player at position: %f, %f\n", app.player.x, app.player.y);
 }

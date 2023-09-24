@@ -22,6 +22,7 @@ static constexpr int32_t SCREEN_WIDTH{MAP_WIDTH*CELL_SIZE};
 static constexpr int32_t SCREEN_HEIGHT{MAP_HEIGHT*CELL_SIZE};
 
 // Player size
+// Should be an even number for rendering purpose
 static constexpr int32_t CURSOR_SIZE{8};
 
 // View definition
@@ -42,7 +43,9 @@ struct position
 {
 	float_t x; 			 // metres
 	float_t y;			 // metres
-	float_t direction;   // degree
+	float_t direction;   // degrees
+	float_t radius;   	 // metres
+	float_t orientation; // degrees
 };
 
 struct CApplication

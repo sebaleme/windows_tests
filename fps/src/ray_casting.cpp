@@ -9,27 +9,193 @@
 #include <math.h>
 #include <algorithm>
 
+int pixel_index(int pos_x, int pos_y)
+{
+    return pos_y * SCREEN_WIDTH + pos_x;
+}
+
+
+EOrientation compute_quadrant(position player)
+{
+    EOrientation result{EOrientation::invalid};
+    float_t& angle = player.orientation;
+    if((angle >= 112.5F)&&(angle < 157.5F ))
+    {
+        result = EOrientation::North_West;
+    }
+    else if((angle >= 67.5F)&&(angle < 112.5F ))
+    {
+        result = EOrientation::North;
+    }
+    else if((angle >= 22.5F)&&(angle < 67.5F ))
+    {
+        result = EOrientation::North_Est;
+    }
+    else if((angle >= -22.5F)&&(angle < 22.5F ))
+    {
+        result = EOrientation::Est;
+    }
+    else if((angle >= -67.5F)&&(angle < -22.5F ))
+    {
+        result = EOrientation::South_Est;
+    }
+    else if((angle >= -112.5F)&&(angle < -67.5F ))
+    {
+        result = EOrientation::South;
+    }
+    else if((angle >= -157.5F)&&(angle < -112.5F ))
+    {
+        result = EOrientation::South_West;
+    }
+    else if(
+        ((angle >= -180.f)&&(angle <= -157.5F ))||
+        ((angle >= 157.5F)&&(angle <= 180.F ))
+    )
+    {
+        result = EOrientation::West;
+    }
+    else
+    {
+        //Do nothing
+    }
+    return result;
+}
+
+bool main_square_tilted(EOrientation quadrant)
+{
+    bool result{false};
+    if( (quadrant == EOrientation::North_Est) ||
+        (quadrant == EOrientation::North_West) ||
+        (quadrant == EOrientation::South_Est) ||
+        (quadrant == EOrientation::South_West)
+    )
+    {
+        result = true;
+    }
+    return result;
+}
+
+// The player display has 8 possible positions
 void update_player_position(uint32_t* pixels, position player, uint8_t* map)
 {
     // Ignore position requests if outside of screen
     int32_t pos_x = std::clamp(static_cast<int32_t>(player.x), 0, SCREEN_WIDTH);
     int32_t pos_y = std::clamp(static_cast<int32_t>(player.y), 0, SCREEN_HEIGHT);
-    // Printing a main square
-    for(int width{0}; width < CURSOR_SIZE; width++)
+
+    // Player orientation
+    EOrientation quadrant = compute_quadrant(player);
+
+    // Printing the player position as a main square
+    if(main_square_tilted(quadrant))
     {
-        for(int height{0}; height < CURSOR_SIZE; height++)
+        for(int height{0}; height < CURSOR_SIZE/2; height++)
         {
-            pixels[(pos_y + height) * SCREEN_WIDTH + pos_x + width] = BLUE_DARK;
+            int minWidth{CURSOR_SIZE/2-height};
+            int maxWidth{CURSOR_SIZE/2+1+height};
+            for(int width{minWidth}; width < maxWidth; width++)
+            {
+                pixels[pixel_index(pos_x + width, pos_y + height)] = BLUE_DARK;
+            }
+        }
+        for(int height{CURSOR_SIZE/2}; height < CURSOR_SIZE+1; height++)
+        {
+            int minWidth{height-CURSOR_SIZE/2};
+            int maxWidth{3*CURSOR_SIZE/2+1-height};
+            for(int width{minWidth}; width < maxWidth; width++)
+            {
+                pixels[pixel_index(pos_x + width, pos_y + height)] = BLUE_DARK;
+            }
         }
     }
-    // Printing right FOV limit
-    for(int fov_right{0}; fov_right < CURSOR_SIZE*2; fov_right++)
+    else // print regular square
     {
-        pixels[(pos_y + CURSOR_SIZE + fov_right) * SCREEN_WIDTH + pos_x + CURSOR_SIZE + fov_right] = BLUE_DARK;
+        for(int width{0}; width < CURSOR_SIZE; width++)
+        {
+            for(int height{0}; height < CURSOR_SIZE; height++)
+            {
+                pixels[pixel_index(pos_x + width, pos_y + height)] = BLUE_DARK;
+            }
+        }
     }
-    // Printing left FOV limit
-    for(int fov_right{0}; fov_right < CURSOR_SIZE*2; fov_right++)
+
+    if(quadrant == EOrientation::North)
     {
-        pixels[(pos_y + CURSOR_SIZE + fov_right) * SCREEN_WIDTH + pos_x - fov_right] = BLUE_DARK;
+        for(int fov{0}; fov < CURSOR_SIZE*2; fov++)
+        {
+            // Printing right FOV limit
+            pixels[pixel_index(pos_x + CURSOR_SIZE + fov, pos_y + CURSOR_SIZE + fov)] = BLUE_DARK;
+            // Printing left FOV limit
+            pixels[pixel_index(pos_x - fov,pos_y + CURSOR_SIZE + fov)] = BLUE_DARK;
+        }
+    }
+    else if(quadrant == EOrientation::South)
+    {
+        for(int fov{0}; fov < CURSOR_SIZE*2; fov++)
+        {
+            // Printing right FOV limit
+            pixels[pixel_index(pos_x + CURSOR_SIZE + fov, pos_y - fov)] = BLUE_DARK;
+            // Printing left FOV limit
+            pixels[pixel_index(pos_x - fov, pos_y - fov)] = BLUE_DARK;
+        }
+    }
+    else if(quadrant == EOrientation::Est)
+    {
+        for(int fov{0}; fov < CURSOR_SIZE*2; fov++)
+        {
+            // Printing left FOV limit
+            pixels[pixel_index(pos_x + CURSOR_SIZE + fov, pos_y + CURSOR_SIZE + fov)] = BLUE_DARK;
+            // Printing right FOV limit
+            pixels[pixel_index(pos_x + CURSOR_SIZE + fov, pos_y - fov)] = BLUE_DARK;
+        }
+    }
+    else if(quadrant == EOrientation::West)
+    {
+        for(int fov{0}; fov < CURSOR_SIZE*2; fov++)
+        {
+            // Printing right FOV limit
+            pixels[pixel_index(pos_x - fov, pos_y + CURSOR_SIZE + fov)] = BLUE_DARK;
+            // Printing left FOV limit
+            pixels[pixel_index(pos_x - fov, pos_y - fov)] = BLUE_DARK;
+        }
+    }
+    else if(quadrant == EOrientation::North_Est)
+    {
+        for(int fov{0}; fov < CURSOR_SIZE*2; fov++)
+        {
+            // Printing left FOV limit
+            pixels[pixel_index(pos_x + CURSOR_SIZE/2, pos_y + CURSOR_SIZE + fov)] = BLUE_DARK;
+            // Printing right FOV limit
+            pixels[pixel_index(pos_x + CURSOR_SIZE + fov, pos_y + CURSOR_SIZE/2)] = BLUE_DARK;
+        }
+    }
+    else if(quadrant == EOrientation::North_West)
+    {
+        for(int fov{0}; fov < CURSOR_SIZE*2; fov++)
+        {
+            // Printing left FOV limit
+            pixels[pixel_index(pos_x + CURSOR_SIZE/2, pos_y + CURSOR_SIZE + fov)] = BLUE_DARK;
+            // Printing right FOV limit
+            pixels[pixel_index(pos_x - fov, pos_y + CURSOR_SIZE/2)] = BLUE_DARK;
+        }
+    }
+    else if(quadrant == EOrientation::South_Est)
+    {
+        for(int fov{0}; fov < CURSOR_SIZE*2; fov++)
+        {
+            // Printing left FOV limit
+            pixels[pixel_index(pos_x + CURSOR_SIZE + fov, pos_y + CURSOR_SIZE/2)] = BLUE_DARK;
+            // Printing right FOV limit
+            pixels[pixel_index(pos_x + CURSOR_SIZE/2, pos_y - fov)] = BLUE_DARK;
+        }
+    }
+    else if(quadrant == EOrientation::South_West)
+    {
+        for(int fov{0}; fov < CURSOR_SIZE*2; fov++)
+        {
+            // Printing left FOV limit
+            pixels[pixel_index(pos_x - fov, pos_y + CURSOR_SIZE/2)] = BLUE_DARK;
+            // Printing right FOV limit
+            pixels[pixel_index(pos_x + CURSOR_SIZE/2, pos_y - fov)] = BLUE_DARK;
+        }
     }
 }

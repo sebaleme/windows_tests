@@ -6,20 +6,36 @@
 # ****************************************************************************/
 #include "input.hpp"
 
+void angleModulo(float_t& angle)
+{
+	if(angle > 180.F)
+	{
+		angle -= 360.F;
+	}
+	if(angle < -180.F)
+	{
+		angle += 360.F;
+	}
+}
+
 void ProcessMovingEvent(SDL_KeyboardEvent& key, position& f_player)
 {
 	switch (key.keysym.sym) {
 	case SDLK_LEFT:
-		f_player.x -= 1;
+		f_player.orientation += 2;
+		angleModulo(f_player.orientation);
 		break;
 	case SDLK_RIGHT:
-		f_player.x += 1;
+		f_player.orientation -= 2;
+		angleModulo(f_player.orientation);
 		break;
 	case SDLK_UP:
-		f_player.y += 1;
+		f_player.x += SDL_cosf(f_player.orientation*SDL_PI_F/180.F);
+		f_player.y += SDL_sinf(f_player.orientation*SDL_PI_F/180.F);		
 		break;
 	case SDLK_DOWN:
-		f_player.y -= 1;
+		f_player.x -= SDL_cosf(f_player.orientation*SDL_PI_F/180.F);
+		f_player.y -= SDL_sinf(f_player.orientation*SDL_PI_F/180.F);
 		break;
 	default:
 		break;
