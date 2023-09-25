@@ -10,6 +10,6 @@
 
 #include "types.hpp"
 
-void construct_world(uint32_t* pixels, uint8_t* map);
+void construct_world(uint32_t* pixels, uint8_t* map, const StatePlayer& f_player);
 
 #endif /* FSP_MAP_RENDERING_FV_HPP */
