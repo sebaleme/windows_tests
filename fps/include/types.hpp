@@ -10,10 +10,8 @@
 
 #include <SDL3/SDL.h>
 #include "colors.hpp"
+#include "map.hpp"
 
-// Map size
-static constexpr int8_t MAP_WIDTH{8};
-static constexpr int8_t MAP_HEIGHT{8};
 // Cell size
 static constexpr int32_t CELL_SIZE{50};
 
@@ -55,21 +53,6 @@ struct CApplication
 	SDL_Texture *texture;
 	uint32_t pixels[SCREEN_WIDTH*SCREEN_HEIGHT];
 	StatePlayer player;
-
-	// 0 means empty, else an object
-	// each value is represented through a color
-	uint8_t map[MAP_WIDTH*MAP_HEIGHT]=
-		// Create map
-	{
-		1,1,1,1,1,1,1,1,
-		1,0,0,0,0,0,0,1,
-		1,0,0,0,2,0,0,1,
-		1,0,0,0,2,2,0,1,
-		1,0,0,0,0,0,0,1,
-		1,0,0,0,0,0,0,1,
-		1,0,2,0,0,0,0,1,
-		1,1,1,1,1,1,1,1,
-	};
 };
 
 

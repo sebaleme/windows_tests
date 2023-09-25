@@ -5,6 +5,7 @@
 # @copyright   MIT license
 # ****************************************************************************/
 #include "input.hpp"
+#include "map.hpp"
 #include "map_rendering_bev.hpp"
 
 void angleModulo(float_t& angle)
@@ -24,7 +25,7 @@ void angleModulo(float_t& angle)
 /// @param f_offset 
 /// @param map 
 /// @return 0 if no progression, 1 if x progression, 2 if y progression and 3 if x and y progression
-int32_t checkFreeSpace(const StatePlayer& f_player, const StatePlayer& f_offset, uint8_t* map)
+int32_t checkFreeSpace(const StatePlayer& f_player, const StatePlayer& f_offset)
 {
 	int32_t result{0};
 
@@ -39,7 +40,7 @@ int32_t checkFreeSpace(const StatePlayer& f_player, const StatePlayer& f_offset,
 	int32_t xNeighborIndex = computeCellIndex(cell_row,cell_col);
 
 	// Check freespace and update result
-	if(map[xNeighborIndex] == 0)
+	if(g_map[xNeighborIndex] == 0)
 	{
 		result = 3;
 	}
@@ -49,14 +50,14 @@ int32_t checkFreeSpace(const StatePlayer& f_player, const StatePlayer& f_offset,
 		cell_col = static_cast<int32_t>(next.x) / CELL_SIZE;
 		cell_row = static_cast<int32_t>(f_player.y) / CELL_SIZE;
 		xNeighborIndex = computeCellIndex(cell_row,cell_col);
-		result = (map[xNeighborIndex] == 0)? 1: 0;
+		result = (g_map[xNeighborIndex] == 0)? 1: 0;
 		// If x-only progression not possible, check y-only
 		if(result == 0)
 		{
 			cell_col = static_cast<int32_t>(f_player.x) / CELL_SIZE;
 			cell_row = static_cast<int32_t>(next.y) / CELL_SIZE;
 			xNeighborIndex = computeCellIndex(cell_row,cell_col);
-			result = (map[xNeighborIndex] == 0)? 2: 0;
+			result = (g_map[xNeighborIndex] == 0)? 2: 0;
 		}
 	}
 
@@ -75,7 +76,7 @@ void updatePosition(StatePlayer& f_player, StatePlayer& f_offset, int32_t freesp
 	}
 }
 
-void ProcessMovingEvent(SDL_KeyboardEvent& key, StatePlayer& f_player, uint8_t* map)
+void ProcessMovingEvent(SDL_KeyboardEvent& key, StatePlayer& f_player)
 {
 	StatePlayer offset{};
 	int32_t freespaceInfo{0};
@@ -91,14 +92,14 @@ void ProcessMovingEvent(SDL_KeyboardEvent& key, StatePlayer& f_player, uint8_t* 
 		case SDLK_UP:
 			offset.x = SDL_cosf(f_player.orientation*SDL_PI_F/180.F);
 			offset.y = SDL_sinf(f_player.orientation*SDL_PI_F/180.F);
-			freespaceInfo = checkFreeSpace(f_player, offset, map);
+			freespaceInfo = checkFreeSpace(f_player, offset);
 			updatePosition(f_player, offset, freespaceInfo);
 			break;
 		case SDLK_DOWN:
 			offset.x = -SDL_cosf(f_player.orientation*SDL_PI_F/180.F);
 			offset.y = -SDL_sinf(f_player.orientation*SDL_PI_F/180.F);
-			freespaceInfo = checkFreeSpace(f_player, offset, map);
-			if(checkFreeSpace(f_player, offset, map))
+			freespaceInfo = checkFreeSpace(f_player, offset);
+			if(checkFreeSpace(f_player, offset))
 			{
 				updatePosition(f_player, offset, freespaceInfo);
 			}
@@ -108,7 +109,7 @@ void ProcessMovingEvent(SDL_KeyboardEvent& key, StatePlayer& f_player, uint8_t* 
 	}
 };
 
-void doInput(StatePlayer& f_player, uint8_t* map)
+void doInput(StatePlayer& f_player)
 {
 	SDL_Event event;
 
@@ -120,7 +121,7 @@ void doInput(StatePlayer& f_player, uint8_t* map)
 				exit(0);
 				break;
 			case SDL_EVENT_KEY_DOWN:
-				ProcessMovingEvent(event.key, f_player, map);
+				ProcessMovingEvent(event.key, f_player);
 				break;
 
 			case SDL_EVENT_KEY_UP:

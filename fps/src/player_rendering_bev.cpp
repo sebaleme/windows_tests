@@ -76,7 +76,7 @@ bool main_square_tilted(EOrientation quadrant)
 }
 
 // The player display has 8 possible positions
-void update_player_position(uint32_t* pixels, const StatePlayer player, uint8_t* map)
+void update_player_position(uint32_t* pixels, const StatePlayer player)
 {
     // Ignore position requests if outside of screen
     int32_t pos_x = static_cast<int32_t>(player.x);

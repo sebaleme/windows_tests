@@ -24,7 +24,7 @@ enum class EOrientation
     invalid
 };
 
-void update_player_position(uint32_t* pixels, StatePlayer player, uint8_t* map);
+void update_player_position(uint32_t* pixels, StatePlayer player);
 
 
 #endif /* FSP_PLAYER_RENDERING_BEV_HPP */

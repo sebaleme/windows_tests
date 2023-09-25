@@ -5,26 +5,11 @@
 # @copyright   MIT license
 # ****************************************************************************/
 #include "map_rendering_bev.hpp"
+#include "colors.hpp"
 #include "types.hpp"
 
-int32_t getColor(uint8_t* map, int32_t index ,bool f_color_modifyer)
-{
-    int32_t color{colors_dark[map[index]]};
-    if(f_color_modifyer)
-    {
-        color = colors_light[map[index]];
-    }
 
-    return color;
-}
-
-int32_t computeCellIndex(int32_t cell_row, int32_t cell_column)
-{
-    return (MAP_HEIGHT - 1 - cell_row)*MAP_WIDTH + cell_column;
-}
-
-
-void construct_map(uint32_t* pixels, uint8_t* map)
+void construct_map(uint32_t* pixels)
 {
     // Processing screen from top left to bottom right
     for(int pixel_row{0}; pixel_row<SCREEN_WIDTH; pixel_row++)
@@ -45,7 +30,7 @@ void construct_map(uint32_t* pixels, uint8_t* map)
             // The pixels array starts from bottom left, whereas the map definition starts from
             // top left
             int32_t index = computeCellIndex(cell_x,cell_y);
-            pixels[pixel_row*SCREEN_WIDTH + pixel_col] = getColor(map,index,color_modifyer);
+            pixels[pixel_row*SCREEN_WIDTH + pixel_col] = getColor(index,color_modifyer);
         }
     }
 }

@@ -14,11 +14,13 @@ set(SDL3_LIBRARIES "${CMAKE_SOURCE_DIR}/external/Release/SDL3.lib")
 add_executable(
     fps 
     src/main.cpp
+    src/colors.cpp
     src/init.cpp
     src/input.cpp
-    src/player_rendering_bev.cpp
+    src/map.cpp
     src/map_rendering_bev.cpp
     src/map_rendering_fv.cpp
+    src/player_rendering_bev.cpp
 )
 
 target_include_directories(fps PUBLIC "${CMAKE_SOURCE_DIR}/external/include" "${CMAKE_SOURCE_DIR}/include")

@@ -25,6 +25,6 @@ static constexpr int32_t BLUE_LIGHT{0x009595FF};
 static std::array<int32_t, 4> colors_dark{GREEN_DARK, RED_DARK, PURPLE_DARK, BLUE_DARK};
 static std::array<int32_t, 4> colors_light{GREEN_LIGHT, RED_LIGHT, PURPLE_LIGHT, BLUE_LIGHT};
 
-
+int32_t getColor(int32_t index ,bool f_color_modifyer);
 
 #endif /* FSP_COLORS_HPP */

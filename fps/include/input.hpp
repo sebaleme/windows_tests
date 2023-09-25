@@ -11,7 +11,7 @@
 #include <SDL3/SDL.h>
 #include <types.hpp>
 
-void doInput(StatePlayer& f_player, uint8_t* map);
+void doInput(StatePlayer& f_player);
 
 
 #endif /* FSP_INPUT_HPP */

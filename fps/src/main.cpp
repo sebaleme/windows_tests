@@ -25,9 +25,9 @@ int main()
     {
         // Without this, the programm stalls when we interract with the window
         // Process player position according to keyboard inputs
-        doInput(app->player, app->map);
-        construct_map(app->pixels, app->map);
-        update_player_position(app->pixels, app->player, app->map);
+        doInput(app->player);
+        construct_map(app->pixels);
+        update_player_position(app->pixels, app->player);
 
         SDL_RenderClear(app->renderer);
         SDL_UpdateTexture(app->texture,NULL,app->pixels,SCREEN_WIDTH*4);
