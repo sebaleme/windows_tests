@@ -18,6 +18,7 @@ add_executable(
     src/input.cpp
     src/player_rendering_bev.cpp
     src/map_rendering_bev.cpp
+    src/map_rendering_fv.cpp
 )
 
 target_include_directories(fps PUBLIC "${CMAKE_SOURCE_DIR}/external/include" "${CMAKE_SOURCE_DIR}/include")

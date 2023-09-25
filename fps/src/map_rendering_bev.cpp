@@ -6,8 +6,6 @@
 # ****************************************************************************/
 #include "map_rendering_bev.hpp"
 #include "types.hpp"
-#include <math.h>
-#include <algorithm>
 
 int32_t getColor(uint8_t* map, int32_t index ,bool f_color_modifyer)
 {
