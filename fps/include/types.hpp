@@ -11,6 +11,7 @@
 #include <SDL3/SDL.h>
 #include "colors.hpp"
 #include "map.hpp"
+#include "state_player.hpp"
 
 // Cell size
 static constexpr int32_t CELL_SIZE{50};
@@ -35,17 +36,6 @@ static constexpr float_t HEIGHT_CEILING{2.F}; // meter
 static constexpr float_t HORIZONTAL_RES{HORIZONTAL_FOV/SCREEN_WIDTH}; // degree per pixel
 static constexpr float_t VERTICAL_RES{VERTICAL_FOV/SCREEN_HEIGHT}; // degree per pixel
 
-// X is horizontal, Y is vertical
-// (0,0) is bottom left
-struct StatePlayer
-{
-	float_t x; 			 // metres
-	float_t y;			 // metres
-	float_t direction;   // degrees
-	float_t radius;   	 // metres
-	float_t orientation; // degrees
-};
-
 struct CApplication
 {
    	SDL_Renderer *renderer;
@@ -54,6 +44,16 @@ struct CApplication
 	uint32_t pixels[SCREEN_WIDTH*SCREEN_HEIGHT];
 	StatePlayer player;
 };
+
+inline float_t degToRad(const float_t angleDeg)
+{
+	return angleDeg*SDL_PI_F/180.F;
+}
+
+inline float_t radToDeg(const float_t angleRad)
+{
+	return angleRad*180.F/SDL_PI_F;
+}
 
 
 #endif /* FSP_TYPES_HPP */

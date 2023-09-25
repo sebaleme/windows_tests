@@ -30,4 +30,6 @@ static const uint8_t g_map[MAP_WIDTH*MAP_HEIGHT]=
 
 int32_t computeCellIndex(int32_t cell_row, int32_t cell_column);
 
+int pixel_index(int pos_x, int pos_y);
+
 #endif /* FSP_MAP_RENDERING_BEV_HPP */

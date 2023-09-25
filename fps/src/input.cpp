@@ -79,6 +79,7 @@ void updatePosition(StatePlayer& f_player, StatePlayer& f_offset, int32_t freesp
 void ProcessMovingEvent(SDL_KeyboardEvent& key, StatePlayer& f_player)
 {
 	StatePlayer offset{};
+	float_t angleRadian{degToRad(f_player.orientation)};
 	int32_t freespaceInfo{0};
 	switch (key.keysym.sym) {
 		case SDLK_LEFT:
@@ -90,14 +91,14 @@ void ProcessMovingEvent(SDL_KeyboardEvent& key, StatePlayer& f_player)
 			angleModulo(f_player.orientation);
 			break;
 		case SDLK_UP:
-			offset.x = SDL_cosf(f_player.orientation*SDL_PI_F/180.F);
-			offset.y = SDL_sinf(f_player.orientation*SDL_PI_F/180.F);
+			offset.x = SDL_cosf(angleRadian);
+			offset.y = SDL_sinf(angleRadian);
 			freespaceInfo = checkFreeSpace(f_player, offset);
 			updatePosition(f_player, offset, freespaceInfo);
 			break;
 		case SDLK_DOWN:
-			offset.x = -SDL_cosf(f_player.orientation*SDL_PI_F/180.F);
-			offset.y = -SDL_sinf(f_player.orientation*SDL_PI_F/180.F);
+			offset.x = -SDL_cosf(angleRadian);
+			offset.y = -SDL_sinf(angleRadian);
 			freespaceInfo = checkFreeSpace(f_player, offset);
 			if(checkFreeSpace(f_player, offset))
 			{
