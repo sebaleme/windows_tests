@@ -8,7 +8,7 @@
 #include "colors.hpp"
 #include "map.hpp"
 
-int32_t getColor(int32_t index ,bool f_color_modifyer)
+int32_t getCellColor(int32_t index ,bool f_color_modifyer)
 {
     int32_t color{colors_dark[g_map[index]]};
     if(f_color_modifyer)

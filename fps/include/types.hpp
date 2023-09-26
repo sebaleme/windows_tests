@@ -14,15 +14,18 @@
 #include "state_player.hpp"
 
 // Cell size
-static constexpr int32_t CELL_SIZE{50};
+static constexpr int32_t CELL_SIZE_PIXELS{50};
 
 // Screen resolution
-static constexpr int32_t SCREEN_WIDTH{MAP_WIDTH*CELL_SIZE};
-static constexpr int32_t SCREEN_HEIGHT{MAP_HEIGHT*CELL_SIZE};
+static constexpr int32_t SCREEN_WIDTH{MAP_WIDTH*CELL_SIZE_PIXELS};
+static constexpr int32_t SCREEN_HEIGHT{MAP_HEIGHT*CELL_SIZE_PIXELS};
 
 // Player size
 // Should be an even number for rendering purpose
 static constexpr int32_t CURSOR_SIZE{8};
+
+// Physical units
+static constexpr float_t BEV_PIXEL_TO_METERS{.5};
 
 // View definition
 // Objects are 2m high

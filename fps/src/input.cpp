@@ -35,8 +35,8 @@ int32_t checkFreeSpace(const StatePlayer& f_player, const StatePlayer& f_offset)
 	next.y = f_player.y + f_offset.y;
 
 	// get candidate cell index, X direction
-	int32_t cell_col = static_cast<int32_t>(next.x) / CELL_SIZE;
-	int32_t cell_row = static_cast<int32_t>(next.y) / CELL_SIZE;
+	int32_t cell_col = static_cast<int32_t>(next.x) / CELL_SIZE_PIXELS;
+	int32_t cell_row = static_cast<int32_t>(next.y) / CELL_SIZE_PIXELS;
 	int32_t xNeighborIndex = computeCellIndex(cell_row,cell_col);
 
 	// Check freespace and update result
@@ -47,15 +47,15 @@ int32_t checkFreeSpace(const StatePlayer& f_player, const StatePlayer& f_offset)
 	else
 	{
 		// If progression not possible, check X-only progression
-		cell_col = static_cast<int32_t>(next.x) / CELL_SIZE;
-		cell_row = static_cast<int32_t>(f_player.y) / CELL_SIZE;
+		cell_col = static_cast<int32_t>(next.x) / CELL_SIZE_PIXELS;
+		cell_row = static_cast<int32_t>(f_player.y) / CELL_SIZE_PIXELS;
 		xNeighborIndex = computeCellIndex(cell_row,cell_col);
 		result = (g_map[xNeighborIndex] == 0)? 1: 0;
 		// If x-only progression not possible, check y-only
 		if(result == 0)
 		{
-			cell_col = static_cast<int32_t>(f_player.x) / CELL_SIZE;
-			cell_row = static_cast<int32_t>(next.y) / CELL_SIZE;
+			cell_col = static_cast<int32_t>(f_player.x) / CELL_SIZE_PIXELS;
+			cell_row = static_cast<int32_t>(next.y) / CELL_SIZE_PIXELS;
 			xNeighborIndex = computeCellIndex(cell_row,cell_col);
 			result = (g_map[xNeighborIndex] == 0)? 2: 0;
 		}
