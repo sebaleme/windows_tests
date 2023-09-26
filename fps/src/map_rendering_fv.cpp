@@ -9,7 +9,7 @@
 #include <iostream>
 #include <algorithm>
 
-void construct_world(uint32_t* pixels, uint8_t* map, const StatePlayer& f_player)
+void construct_world(uint32_t* pixels, const StatePlayer& f_player)
 {
     // Processing screen from left to right
     for(int pixel_col{0}; pixel_col<SCREEN_WIDTH; pixel_col++)

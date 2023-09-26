@@ -8,6 +8,7 @@
 #include "input.hpp"
 #include "player_rendering_bev.hpp"
 #include "map_rendering_bev.hpp"
+#include "map_rendering_fv.hpp"
 #include "types.hpp"
 #include <iostream>
 
@@ -27,7 +28,8 @@ int main()
         // Process player position according to keyboard inputs
         doInput(app->player);
         construct_map(app->pixels);
-        update_player_position(app->pixels, app->player);
+        player_rendering_bev(app->pixels, app->player);
+        //construct_world(app->pixels, app->player);
 
         SDL_RenderClear(app->renderer);
         SDL_UpdateTexture(app->texture,NULL,app->pixels,SCREEN_WIDTH*4);

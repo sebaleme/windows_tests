@@ -10,7 +10,7 @@
 
 #include "types.hpp"
 
-void update_player_position(uint32_t* pixels, StatePlayer player);
+void player_rendering_bev(uint32_t* pixels, StatePlayer player);
 
 
 #endif /* FSP_PLAYER_RENDERING_BEV_HPP */
