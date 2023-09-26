@@ -9,13 +9,20 @@
 #include <iostream>
 #include <algorithm>
 
+float_t getAngleCurrentColumn(float orientation, int32_t columnIndex)
+{
+    return orientation + (SCREEN_WIDTH / 2 - columnIndex) * HORIZONTAL_RES;
+}
+
+
 void construct_world(uint32_t* pixels, const StatePlayer& f_player)
 {
     // Processing screen from left to right
-    for(int pixel_col{0}; pixel_col<SCREEN_WIDTH; pixel_col++)
+    for(int32_t pixel_col{0}; pixel_col<SCREEN_WIDTH; pixel_col++)
     {
         // Ray angle and its trigonometric values
-        float_t angleRad = degToRad(f_player.orientation + (SCREEN_WIDTH/2 - pixel_col) *HORIZONTAL_RES);
+        float_t angleDeg = getAngleCurrentColumn(f_player.orientation, pixel_col);
+        float_t angleRad = degToRad(angleDeg);
         float_t cosfAngle = cosf(angleRad);
         float_t sinfAngle = sinf(angleRad);
 
