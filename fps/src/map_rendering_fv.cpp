@@ -46,26 +46,26 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
             while(g_map[cellIndex] == 0U)
             {
                 // Distance to the east cell (cell_col + 1)
-                float_t xDistance = intersecX - cell_col*CELL_SIZE_PIXELS;
+                float_t xDistance = (cell_col+1) * CELL_SIZE_PIXELS - intersecX;
                 float_t distanceEastCell = xDistance / cosfAngle;
                 // Distance to the north cell (cell_row + 1)
-                float_t yDistance = intersecY - cell_row*CELL_SIZE_PIXELS;
+                float_t yDistance = (cell_row+1) * CELL_SIZE_PIXELS - intersecY;
                 float_t distanceNorthCell = yDistance / sinfAngle;
                 // Check which cell comes next
                 if(distanceEastCell > distanceNorthCell)
                 {
                     // Case north cell is the next
                     ++cell_row;
-                    intersecX = cosfAngle*distanceNorthCell;
-                    intersecY = yDistance;
+                    intersecX += cosfAngle*distanceNorthCell;
+                    intersecY = static_cast<float_t>(cell_row * CELL_SIZE_PIXELS);
                     intersectionSide = true;
                 }
                 else
                 {
                     // Case west cell is the next
                     ++cell_col;
-                    intersecX = xDistance;
-                    intersecY = sinfAngle*distanceEastCell;
+                    intersecX = static_cast<float_t>(cell_col * CELL_SIZE_PIXELS);
+                    intersecY += sinfAngle*distanceEastCell;
                     intersectionSide = false;
                 }
                 cellIndex = computeCellIndex(cell_row,cell_col);
@@ -73,8 +73,8 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
             distanceToObstacle = intersecX / cosfAngle;
 
             // Fill pixel column
-            int32_t limitCeilingObstacle = static_cast<int32_t>(distanceToObstacle);
-            int32_t limitObstacleGround = SCREEN_HEIGHT - static_cast<int32_t>(distanceToObstacle);
+            int32_t limitCeilingObstacle = static_cast<int32_t>(distanceToObstacle/2.F);
+            int32_t limitObstacleGround = SCREEN_HEIGHT - static_cast<int32_t>(distanceToObstacle/2.F);
 
             // Ceiling
             for(int32_t pixel_row{0}; pixel_row<limitCeilingObstacle; pixel_row++)
