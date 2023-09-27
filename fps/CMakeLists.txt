@@ -44,6 +44,7 @@ enable_testing()
 add_executable(
   map_ut
   test/map_ut.cpp
+  src/map.cpp
 )
 
 target_include_directories(map_ut PUBLIC "${CMAKE_SOURCE_DIR}/external/include" "${CMAKE_SOURCE_DIR}/include")
