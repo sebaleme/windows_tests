@@ -19,6 +19,7 @@ static constexpr int32_t CELL_SIZE_PIXELS{50};
 // Screen resolution
 static constexpr int32_t SCREEN_WIDTH{MAP_WIDTH*CELL_SIZE_PIXELS};
 static constexpr int32_t SCREEN_HEIGHT{MAP_HEIGHT*CELL_SIZE_PIXELS};
+static constexpr int32_t SCREEN_MAXDISTSQUARED{SCREEN_HEIGHT*SCREEN_HEIGHT + SCREEN_WIDTH*SCREEN_WIDTH};
 
 // Player size
 // Should be an even number for rendering purpose
