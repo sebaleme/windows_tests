@@ -7,6 +7,7 @@
 #include "input.hpp"
 #include "map.hpp"
 #include "map_rendering_bev.hpp"
+#include <iostream>
 
 void angleModulo(float_t& angle)
 {
@@ -123,6 +124,7 @@ void doInput(StatePlayer& f_player)
 				break;
 			case SDL_EVENT_KEY_DOWN:
 				ProcessMovingEvent(event.key, f_player);
+				std::cout << "current position: x " << f_player.x << ", y " << f_player.y << ", orientation " << f_player.orientation << std::endl;
 				break;
 
 			case SDL_EVENT_KEY_UP:
