@@ -42,10 +42,14 @@ static constexpr float_t VERTICAL_RES{VERTICAL_FOV/SCREEN_HEIGHT}; // degree per
 
 struct CApplication
 {
-   	SDL_Renderer *renderer;
-	SDL_Window *window;
-	SDL_Texture *texture;
-	uint32_t pixels[SCREEN_WIDTH*SCREEN_HEIGHT];
+   	SDL_Renderer *renderer_fp;
+   	SDL_Renderer *renderer_bev;
+	SDL_Window *window_fp;
+	SDL_Window *window_bev;
+	SDL_Texture *texture_fp;
+	SDL_Texture *texture_bev;
+	uint32_t pixels_fp[SCREEN_WIDTH*SCREEN_HEIGHT];
+	uint32_t pixels_bev[SCREEN_WIDTH*SCREEN_HEIGHT];
 	StatePlayer player;
 };
 

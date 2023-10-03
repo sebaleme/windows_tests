@@ -23,9 +23,15 @@ void initSDL(CApplication& app)
 		exit(1);
 	}
 
-	app.window = SDL_CreateWindow("Shooter 01", SCREEN_WIDTH, SCREEN_HEIGHT, windowFlags);
+	app.window_fp = SDL_CreateWindow("Shooter 01", SCREEN_WIDTH, SCREEN_HEIGHT, windowFlags);
+	if (!app.window_fp)
+	{
+		printf("Failed to open %d x %d window: %s\n", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_GetError());
+		exit(1);
+	}
 
-	if (!app.window)
+	app.window_bev = SDL_CreateWindow("Shooter 02", SCREEN_WIDTH, SCREEN_HEIGHT, windowFlags);
+	if (!app.window_bev)
 	{
 		printf("Failed to open %d x %d window: %s\n", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_GetError());
 		exit(1);
@@ -33,9 +39,15 @@ void initSDL(CApplication& app)
 
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
 
-	app.renderer = SDL_CreateRenderer(app.window, NULL, rendererFlags);
+	app.renderer_fp = SDL_CreateRenderer(app.window_fp, NULL, rendererFlags);
+	if (!app.renderer_fp)
+	{
+		printf("Failed to create renderer: %s\n", SDL_GetError());
+		exit(1);
+	}
 
-	if (!app.renderer)
+	app.renderer_bev = SDL_CreateRenderer(app.window_bev, NULL, rendererFlags);
+	if (!app.renderer_fp)
 	{
 		printf("Failed to create renderer: %s\n", SDL_GetError());
 		exit(1);
