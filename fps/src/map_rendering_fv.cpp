@@ -6,17 +6,21 @@
 # ****************************************************************************/
 #include "map_rendering_fv.hpp"
 #include "types.hpp"
+#include <cassert>
 #include <iostream>
 #include <algorithm>
 
-float_t getAngleCurrentColumn(float orientation, int32_t columnIndex)
+float_t getAngleCurrentColumn(float_t orientation, int32_t columnIndex)
 {
-    return orientation + (SCREEN_WIDTH / 2 - columnIndex) * HORIZONTAL_RES;
+    float_t raw_angle_deg{orientation + (SCREEN_WIDTH / 2 - columnIndex) * HORIZONTAL_RES};
+    while (raw_angle_deg >= 180.F) raw_angle_deg -= 180.F *2;
+    while (raw_angle_deg < -180.F) raw_angle_deg += 180.F *2;
+    return raw_angle_deg;
 }
 
 int32_t computeObjectSize(float_t objectDistance)
 {
-    float val = sqrt(static_cast<float_t>(SCREEN_HEIGHT))-objectDistance/1.41F;
+    float val = 350-objectDistance*0.44F;
     return std::min(static_cast<int32_t>(val),SCREEN_HEIGHT);
 }
 
@@ -89,18 +93,25 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                     intersecX += cosfAngle*distanceNorthCell;
                     intersecY = static_cast<float_t>(cell_row * CELL_SIZE_PIXELS);
                     intersectionSide = true;
+                    // intersecX is the X coordinate of the intersection with the obstacle, so we
+                    // need to substract the player x position to compute the ray length
+                    distanceToObstacle = (intersecX - f_player.x) / cosfAngle;
                 }
                 else
                 {
-                    // Case west cell is the next
+                    // Case east cell is the next
                     ++cell_col;
                     intersecX = static_cast<float_t>(cell_col * CELL_SIZE_PIXELS);
                     intersecY += sinfAngle*distanceEastCell;
                     intersectionSide = false;
+                    distanceToObstacle = (intersecY - f_player.y) / sinfAngle;
                 }
                 cellIndex = computeCellIndex(cell_row,cell_col);
             }
-            distanceToObstacle = intersecX / cosfAngle;
+            if (distanceToObstacle > static_cast<float_t>(SCREEN_WIDTH) * sqrt(2.F))
+            {
+                std::cout << "unplausible angle" << std::endl;
+            }
             fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, intersectionSide);
         }
         else if((angleRad > (SDL_PI_F / 2.F)) && (angleRad < SDL_PI_F))
@@ -110,27 +121,33 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
             {
                 // Distance to the west cell (cell_col - 1)
                 float_t xDistance = intersecX - cell_col*CELL_SIZE_PIXELS;
-                float_t distanceWestCell = xDistance / cosfAngle;
+                float_t distanceWestCell = -xDistance / cosfAngle;
                 // Distance to the north cell (cell_row + 1)
-                float_t yDistance = intersecY - cell_row*CELL_SIZE_PIXELS;
+                float_t yDistance = (cell_row + 1)*CELL_SIZE_PIXELS - intersecY;
                 float_t distanceNorthCell = yDistance / sinfAngle;
                 // Check which cell comes next
                 if(distanceWestCell > distanceNorthCell)
                 {
                     // Case north cell is the next
                     ++cell_row;
-                    intersecX = cosfAngle*distanceNorthCell;
-                    intersecY = yDistance;
+                    intersecX += cosfAngle*distanceNorthCell;
+                    intersecY = static_cast<float_t>(cell_row * CELL_SIZE_PIXELS);
+                    // Cos is negative, but f_player.x is greater than intersectX hence positive distance
+                    distanceToObstacle = (intersecX - f_player.x) / cosfAngle;
                 }
                 else
                 {
                     // Case west cell is the next
                     cell_col--;
-                    intersecX = xDistance;
-                    intersecY = sinfAngle*distanceWestCell;
+                    intersecX = static_cast<float_t>(cell_col * CELL_SIZE_PIXELS);;
+                    intersecY += sinfAngle*distanceWestCell;
+                    distanceToObstacle = (intersecY - f_player.y) / sinfAngle;
                 }
                 cellIndex = computeCellIndex(cell_row,cell_col);
-                distanceToObstacle = intersecX / cosfAngle;
+                if (distanceToObstacle > static_cast<float_t>(SCREEN_WIDTH) * sqrt(2.F))
+                {
+                    std::cout << "unplausible angle" << std::endl;
+                }
                 fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, intersectionSide);
             }
         }
@@ -139,29 +156,72 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
             // Look for the first obstacle
             while(g_map[cellIndex] == 0)
             {
-                // Distance to the west cell (cell_col - 1)
-                float_t xDistance = intersecX - cell_col*CELL_SIZE_PIXELS;
-                float_t distanceWestCell = xDistance / cosfAngle;
+                // Distance to the east cell (cell_col + 1)
+                float_t xDistance = (cell_col + 1) * CELL_SIZE_PIXELS - intersecX;
+                float_t distanceEastCell = xDistance / cosfAngle;
                 // Distance to the south cell (cell_row - 1)
                 float_t yDistance = intersecY - cell_row*CELL_SIZE_PIXELS;
-                float_t distanceNorthCell = yDistance / sinfAngle;
+                float_t distanceSouthCell = -yDistance / sinfAngle;
                 // Check which cell comes next
-                if(distanceWestCell > distanceNorthCell)
+                if(distanceEastCell > distanceSouthCell)
                 {
-                    // Case north cell is the next
-                    ++cell_row;
-                    intersecX = cosfAngle*distanceNorthCell;
-                    intersecY = yDistance;
+                    // Case south cell is the next
+                    cell_row--;
+                    intersecX += cosfAngle * distanceSouthCell;
+                    intersecY = static_cast<float_t>(cell_row * CELL_SIZE_PIXELS);
+                    distanceToObstacle = (intersecX - f_player.x) / cosfAngle;
+                }
+                else
+                {
+                    // Case east cell is the next
+                    ++cell_col;
+                    intersecX = static_cast<float_t>(cell_col * CELL_SIZE_PIXELS);
+                    intersecY += sinfAngle* distanceEastCell;
+                    distanceToObstacle = (intersecY - f_player.y) / sinfAngle;
+                }
+                cellIndex = computeCellIndex(cell_row,cell_col);
+                if (distanceToObstacle > static_cast<float_t>(SCREEN_WIDTH) * sqrt(2.F))
+                {
+                    std::cout << "unplausible angle" << std::endl;
+                }
+                fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, intersectionSide);
+            }
+        }
+        else if ((angleRad > -SDL_PI_F) && (angleRad < -SDL_PI_F/2))
+        {
+            // Look for the first obstacle
+            while (g_map[cellIndex] == 0)
+            {
+                // Distance to the west cell (cell_col - 1)
+                float_t xDistance = intersecX - cell_col * CELL_SIZE_PIXELS;
+                float_t distanceWestCell = -xDistance / cosfAngle;
+                // Distance to the south cell (cell_row - 1)
+                float_t yDistance = intersecY - cell_row * CELL_SIZE_PIXELS;
+                float_t distanceSouthCell = -yDistance / sinfAngle;
+                // Check which cell comes next
+                if (distanceWestCell > distanceSouthCell)
+                {
+                    // Case south cell is the next
+                    cell_row--;
+                    intersecX += cosfAngle * distanceSouthCell;
+                    intersecY = static_cast<float_t>(cell_row * CELL_SIZE_PIXELS);
+                    // Cos is negative, but f_player.x is greater than intersectX hence positive distance
+                    distanceToObstacle = (intersecX - f_player.x) / cosfAngle;
                 }
                 else
                 {
                     // Case west cell is the next
                     cell_col--;
-                    intersecX = xDistance;
-                    intersecY = sinfAngle*distanceWestCell;
+                    intersecX = static_cast<float_t>(cell_col * CELL_SIZE_PIXELS);;
+                    intersecY += sinfAngle * distanceWestCell;
+                    // Sin is negative, but f_player.y is greater than intersectX, so we have a positive distance
+                    distanceToObstacle = (intersecY - f_player.y) / sinfAngle;
                 }
-                cellIndex = computeCellIndex(cell_row,cell_col);
-                distanceToObstacle = intersecX / cosfAngle;
+                cellIndex = computeCellIndex(cell_row, cell_col);
+                if (distanceToObstacle > static_cast<float_t>(SCREEN_WIDTH) * sqrt(2.F))
+                {
+                    std::cout << "unplausible angle" << std::endl;
+                }
                 fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, intersectionSide);
             }
         }
@@ -187,9 +247,29 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
             }
             int32_t player_col = static_cast<int32_t>(f_player.x) / CELL_SIZE_PIXELS;
             distanceToObstacle = abs(cell_col - player_col) * CELL_SIZE_PIXELS + f_player.x - player_col * CELL_SIZE_PIXELS;
+            if (distanceToObstacle > static_cast<float_t>(SCREEN_WIDTH) * sqrt(2.F))
+            {
+                std::cout << "unplausible angle" << std::endl;
+            }
             fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, false);
         }
-        else if(angleRad == SDL_PI_F)
+        else if (angleRad == -SDL_PI_F / 2.F)
+        {
+            // Look for the first obstacle
+            while (g_map[cellIndex] == 0)
+            {
+                cell_row = cell_row - 1;
+                cellIndex = computeCellIndex(cell_row, cell_col);
+            }
+            int32_t player_col = static_cast<int32_t>(f_player.x) / CELL_SIZE_PIXELS;
+            distanceToObstacle = abs(cell_col - player_col) * CELL_SIZE_PIXELS + f_player.x - player_col * CELL_SIZE_PIXELS;
+            if (distanceToObstacle > static_cast<float_t>(SCREEN_WIDTH) * sqrt(2.F))
+            {
+                std::cout << "unplausible angle" << std::endl;
+            }
+            fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, false);
+        }
+        else if((angleRad == SDL_PI_F)|| (angleRad == -SDL_PI_F))
         {
             // Look for the first obstacle
             while(g_map[cellIndex] == 0)
@@ -198,6 +278,10 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                 cellIndex = computeCellIndex(cell_row,cell_col);
             }
             distanceToObstacle = intersecX / cosfAngle;
+            if (distanceToObstacle > static_cast<float_t>(SCREEN_WIDTH) * sqrt(2.F))
+            {
+                std::cout << "unplausible angle" << std::endl;
+            }
             fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, false);
         }
         else if (angleRad == 0.F)
@@ -209,6 +293,10 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                 cellIndex = computeCellIndex(cell_row, cell_col);
             }
             distanceToObstacle = intersecX / cosfAngle;
+            if (distanceToObstacle > static_cast<float_t>(SCREEN_WIDTH) * sqrt(2.F))
+            {
+                std::cout << "unplausible angle" << std::endl;
+            }
             fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, false);
         }
         else
