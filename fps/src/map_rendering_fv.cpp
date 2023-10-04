@@ -18,9 +18,10 @@ float_t getAngleCurrentColumn(float_t orientation, int32_t columnIndex)
     return raw_angle_deg;
 }
 
+// We use a linear equation to convert the object distance into object size
 int32_t computeObjectSize(float_t objectDistance)
 {
-    float val = 350-objectDistance*0.44F;
+    float val = objectDistance * OBJECT_SIZE_ALPHA + OBJECT_SIZE_BETA;
     return std::min(static_cast<int32_t>(val),SCREEN_HEIGHT);
 }
 

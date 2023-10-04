@@ -9,9 +9,23 @@
 #define FSP_TYPES_HPP
 
 #include <SDL3/SDL.h>
+#include <cassert>
 #include "colors.hpp"
 #include "map.hpp"
 #include "state_player.hpp"
+
+// C++11 compile time square root using binary search
+#define MID ((lo + hi + 1) / 2)
+constexpr int32_t sqrt_helper(int32_t x, int32_t lo, int32_t hi)
+{
+  return lo == hi ? lo : ((x / MID < MID)
+      ? sqrt_helper(x, lo, MID - 1) : sqrt_helper(x, MID, hi));
+}
+constexpr int32_t ct_sqrt(int32_t x)
+{
+	assert( x > 0);
+  	return sqrt_helper(x, 0, x / 2 + 1);
+}
 
 // Cell size
 static constexpr int32_t CELL_SIZE_PIXELS{50};
@@ -20,6 +34,12 @@ static constexpr int32_t CELL_SIZE_PIXELS{50};
 static constexpr int32_t SCREEN_WIDTH{MAP_WIDTH*CELL_SIZE_PIXELS};
 static constexpr int32_t SCREEN_HEIGHT{MAP_HEIGHT*CELL_SIZE_PIXELS};
 static constexpr int32_t SCREEN_MAXDISTSQUARED{SCREEN_HEIGHT*SCREEN_HEIGHT + SCREEN_WIDTH*SCREEN_WIDTH};
+static constexpr int32_t SCREEN_MAXDIST{ct_sqrt(SCREEN_MAXDISTSQUARED)};
+
+// Conversion distance size
+static constexpr int32_t MIN_OBJECTSIZE{100};
+static constexpr float_t OBJECT_SIZE_BETA{static_cast<float_t>(SCREEN_HEIGHT)};
+static constexpr float_t OBJECT_SIZE_ALPHA{static_cast<float_t>(MIN_OBJECTSIZE - OBJECT_SIZE_BETA) / static_cast<float_t>(SCREEN_MAXDIST)};
 
 // Player size
 // Should be an even number for rendering purpose
