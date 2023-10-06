@@ -13,7 +13,8 @@
 TEST(getAngleCurrentColumn_regularDistance, wallAngle_test1) {
   float_t orientation{0.F};
   int32_t index{0};
-  float_t angle_current_column = getAngleCurrentColumn_regularDistance(orientation, index);
+  float_t angleToWallNormal = getAngleToWallNormal(index);
+  float_t angle_current_column = getAngleCurrentColumn_regularDistance(orientation, angleToWallNormal);
   EXPECT_EQ(angle_current_column, HORIZONTAL_FOV/2.F);
 }
 
@@ -21,7 +22,8 @@ TEST(getAngleCurrentColumn_regularDistance, wallAngle_test1) {
 TEST(getAngleCurrentColumn_regularDistance, wallAngle_test2) {
   float_t orientation{0.F};
   int32_t index{SCREEN_WIDTH / 2};
-  float_t angle_current_column = getAngleCurrentColumn_regularDistance(orientation, index);
+  float_t angleToWallNormal = getAngleToWallNormal(index);
+  float_t angle_current_column = getAngleCurrentColumn_regularDistance(orientation, angleToWallNormal);
   EXPECT_EQ(angle_current_column, 0.F);
 }
 
@@ -38,7 +40,8 @@ TEST(getAngleCurrentColumn_regularDistance, wallAngle_test3)
     float_t orientation{0.F};
     for (int32_t index{1}; index < angleResults.size(); index++)
     {
-        float_t angle_current_column = getAngleCurrentColumn_regularDistance(orientation, index);
+        float_t angleToWallNormal = getAngleToWallNormal(index);
+        float_t angle_current_column = getAngleCurrentColumn_regularDistance(orientation, angleToWallNormal);
         EXPECT_GT(angle_current_column, angleResults[index]) << "for index " << index;
     }
 }
