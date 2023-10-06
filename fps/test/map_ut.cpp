@@ -1,7 +1,7 @@
 /* *****************************************************************************
 ##
 # @file        map.cpp
-# @brief       map access functions
+# @brief       tests for map access functions
 # @copyright   MIT license
 # ****************************************************************************/
 

@@ -41,22 +41,26 @@ static constexpr int32_t MIN_OBJECTSIZE{100};
 static constexpr float_t OBJECT_SIZE_BETA{static_cast<float_t>(SCREEN_HEIGHT)};
 static constexpr float_t OBJECT_SIZE_ALPHA{static_cast<float_t>(MIN_OBJECTSIZE - OBJECT_SIZE_BETA) / static_cast<float_t>(SCREEN_MAXDIST)};
 
-// Player size
-// Should be an even number for rendering purpose
-static constexpr int32_t CURSOR_SIZE{8};
-
 // Physical units
 static constexpr float_t BEV_PIXEL_TO_METERS{.5};
+
+// Player attribute
+// Should be an even number for rendering purpose
+static constexpr int32_t CURSOR_SIZE{8};
 
 // View definition
 // Objects are 2m high
 // The distance of top row pixels is (HEIGHT_CEILING - HEIGHT_OBSERVER) / tan(VERTICAL_FOV/2)
 static constexpr float_t HORIZONTAL_FOV{120.F}; // degree
+static constexpr float_t HORIZONTAL_INCREMENT{HORIZONTAL_FOV / static_cast<float_t>(SCREEN_HEIGHT)}; // degree
+static constexpr float_t HALF_HORIZONTAL_FOV_RAD{(HORIZONTAL_FOV/2)*static_cast<float_t>(SDL_PI_F)/180.F}; // degree
 static constexpr float_t VERTICAL_FOV{90.F}; // degree
-static constexpr float_t DISTANCE_OBSERVER{1.F}; // meter
 static constexpr float_t HEIGHT_OBSERVER{1.5F}; // meter
 static constexpr float_t HEIGHT_CEILING{2.F}; // meter
+// The wall is the location of the scene projection
+static constexpr float_t DISTANCE_WALL_PLAYER{.5F}; // meter
 
+// static constexpr float_t HORIZONTAL_RES{HORIZONTAL_FOV/SCREEN_WIDTH}; // degree per pixel
 static constexpr float_t HORIZONTAL_RES{HORIZONTAL_FOV/SCREEN_WIDTH}; // degree per pixel
 static constexpr float_t VERTICAL_RES{VERTICAL_FOV/SCREEN_HEIGHT}; // degree per pixel
 

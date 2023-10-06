@@ -42,19 +42,22 @@ target_link_libraries(fps PUBLIC ${SDL3_LIBRARIES})
 enable_testing()
 
 add_executable(
-  map_ut
+  fps_ut
   test/map_ut.cpp
   src/map.cpp
+  test/map_rendering_fv_ut.cpp
+  src/map_rendering_fv.cpp
+  src/colors.cpp
 )
 
-target_include_directories(map_ut PUBLIC "${CMAKE_SOURCE_DIR}/external/include" "${CMAKE_SOURCE_DIR}/include")
+target_include_directories(fps_ut PUBLIC "${CMAKE_SOURCE_DIR}/external/include" "${CMAKE_SOURCE_DIR}/include")
 
 target_link_libraries(
-    map_ut
+  fps_ut
   GTest::gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(map_ut)
+gtest_discover_tests(fps_ut)
 
 
