@@ -18,49 +18,52 @@ float_t getAngleCurrentColumn_regularAngle(float_t orientation, int32_t columnIn
     return raw_angle_deg;
 }
 
-float_t getAngleCurrentColumn_regularDistance(float_t orientation, float_t angleToWallNormal_deg)
+float_t getAngleCurrentColumn_regularDistance(float_t orientation, float_t angleToProjPlanNormal_deg)
 {
     // Compute the projection plan width.
     // https://gamedev.stackexchange.com/questions/156842/how-can-i-correct-an-unwanted-fisheye-effect-when-drawing-a-scene-with-raycastin
-    float_t raw_angle_deg = orientation + radToDeg(angleToWallNormal_deg);
+    float_t raw_angle_deg = orientation + radToDeg(angleToProjPlanNormal_deg);
     while (raw_angle_deg >= 180.F) raw_angle_deg -= 180.F *2;
     while (raw_angle_deg < -180.F) raw_angle_deg += 180.F *2;
     return raw_angle_deg;
 }
 
-// We use a linear equation to convert the object distance into object size
-int32_t computeObjectSize(float_t objectDistance)
+// The perspective tells us that there is a relation between the projected object size, the object distance, projected plan height 
+// and the player distance to the projected plan
+int32_t computeObjectSizeInPixels(float_t objectDistance)
 {
-    float val = objectDistance * OBJECT_SIZE_ALPHA + OBJECT_SIZE_BETA;
-    return std::min(static_cast<int32_t>(val),SCREEN_HEIGHT);
+    float_t projectedObjectSize = DIST_PROJPLAN_PLAYER * WALL_HEIGHT / (objectDistance * BEV_CELL_TO_METERS / 50.F);
+    // Currently, we assume that the projection plan starts from the ground level
+    VERTICAL_SIZE_PROJPLAN = tanf(static_cast<float_t>(VERTICAL_FOV / 2)) * DIST_PROJPLAN_PLAYER; // meter
+    VERTICAL_INCREMENT = VERTICAL_SIZE_PROJPLAN / SCREEN_HEIGHT;
+    float_t numberOfPixels = projectedObjectSize / VERTICAL_INCREMENT;
+    return std::min(static_cast<int32_t>(numberOfPixels),SCREEN_HEIGHT);
 }
 
-// The wall is the screen in front of the player where we project the scene
-float_t getAngleToWallNormal(const int32_t columnIndex)
+// The Projection plan is the screen in front of the player where we project the scene
+float_t getAngleToProjectionPlanNormal(const int32_t columnIndex)
 {
-    float_t wall_width_meter{ DISTANCE_WALL_PLAYER * tanf(HALF_HORIZONTAL_FOV_RAD) * 2 };
-    float_t lateral_distance_wall_cell = (SCREEN_WIDTH / 2 - columnIndex) * wall_width_meter / SCREEN_WIDTH;
-    return atan2f(lateral_distance_wall_cell, DISTANCE_WALL_PLAYER);
+    float_t proj_plan_width_meter{ DIST_PROJPLAN_PLAYER * tanf(HALF_HORIZONTAL_FOV_RAD) * 2 };
+    float_t lateral_distance_proj_plan_cell = (SCREEN_WIDTH / 2 - columnIndex) * proj_plan_width_meter / SCREEN_WIDTH;
+    return atan2f(lateral_distance_proj_plan_cell, DIST_PROJPLAN_PLAYER);
 }
 
 // Using the player´s distance leads to the fisheye effect (except if we project the scene on a sphere). 
 // We need to compute the distance to a screen in front of the player for being able to project on a plane
-void fishEyeFilter(const float_t angleToWallNormal, float_t& distanceToObstacle)
+void fishEyeFilter(const int32_t pixel_col, float_t& distanceToObstacle)
 {
-    // Compute angle to wall normal and its cosinus
-    float_t cosfangle{ cosf(angleToWallNormal) };
-    // remove distance between wall and player
-    distanceToObstacle -= abs(DISTANCE_WALL_PLAYER * cosfangle);
-    // compute distance to the wall
+    // Compute cosinus
+    float_t cosfangle{ cosf(degToRad((SCREEN_WIDTH / 2 - pixel_col) * HORIZONTAL_RES)) };
+    // compute projected distance
     distanceToObstacle = abs(distanceToObstacle * cosfangle);
 }
 
 void fillColumn(uint32_t* pixels, int32_t pixel_col, int32_t cellIndex, float_t distanceToObstacle, bool intersectionSide)
 {
     // Fill pixel column
-    int32_t objectSize = computeObjectSize(distanceToObstacle);
-    int32_t limitCeilingObstacle = (SCREEN_HEIGHT - objectSize)/2;
-    int32_t limitObstacleGround = objectSize + limitCeilingObstacle;
+    int32_t objectSizeInPixels = computeObjectSizeInPixels(distanceToObstacle);
+    int32_t limitCeilingObstacle = (SCREEN_HEIGHT - objectSizeInPixels)/2;
+    int32_t limitObstacleGround = objectSizeInPixels + limitCeilingObstacle;
 
     // Ceiling
     for(int32_t pixel_row{0}; pixel_row<limitCeilingObstacle; pixel_row++)
@@ -85,7 +88,6 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
     for(int32_t pixel_col{0}; pixel_col<SCREEN_WIDTH; pixel_col++)
     {
         // Ray angle and its trigonometric values
-        float_t angleToWallNormal = getAngleToWallNormal(pixel_col);
         float_t angleDeg = getAngleCurrentColumn_regularAngle(f_player.orientation, pixel_col);
         float_t angleRad = degToRad(angleDeg);
         float_t cosfAngle = cosf(angleRad);
@@ -106,7 +108,7 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
         bool intersectionSide = false;
 
         // Differentiate if we are looking north, south, east or west
-        if((angleRad > 0.F) && (angleRad < SDL_PI_F /2.F))
+        if((angleDeg >= HORIZONTAL_DELTA) && (angleRad < SDL_PI_F /2.F))
         {
             // Look for the first obstacle
             while(g_map[cellIndex] == 0U)
@@ -147,7 +149,7 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
             {
                 std::cout << "unplausible angle" << std::endl;
             }
-            fishEyeFilter(angleToWallNormal, distanceToObstacle);
+            fishEyeFilter(pixel_col, distanceToObstacle);
             fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, intersectionSide);
         }
         else if((angleRad > (SDL_PI_F / 2.F)) && (angleRad < SDL_PI_F))
@@ -185,10 +187,10 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
             {
                 std::cout << "unplausible angle" << std::endl;
             }
-            fishEyeFilter(angleToWallNormal, distanceToObstacle);
+            fishEyeFilter(pixel_col, distanceToObstacle);
             fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, intersectionSide);
         }
-        else if((angleRad > -(SDL_PI_F / 2.F)) && (angleRad < 0.F))
+        else if((angleRad > -(SDL_PI_F / 2.F)) && (angleDeg < -HORIZONTAL_DELTA))
         {
             // Look for the first obstacle
             while(g_map[cellIndex] == 0)
@@ -223,7 +225,7 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
             {
                 std::cout << "unplausible angle" << std::endl;
             }
-            fishEyeFilter(angleToWallNormal, distanceToObstacle);
+            fishEyeFilter(pixel_col, distanceToObstacle);
             fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, intersectionSide);
         }
         else if ((angleRad > -SDL_PI_F) && (angleRad < -SDL_PI_F/2))
@@ -264,7 +266,7 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
             {
                 std::cout << "unplausible angle" << std::endl;
             }
-            fishEyeFilter(angleToWallNormal, distanceToObstacle);
+            fishEyeFilter(pixel_col, distanceToObstacle);
             fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, intersectionSide);
         }
         else if ((angleRad == -SDL_PI_F / 2.F) || (angleRad == SDL_PI_F / 2.F))
@@ -281,10 +283,10 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
             {
                 std::cout << "unplausible angle" << std::endl;
             }
-            fishEyeFilter(angleToWallNormal, distanceToObstacle);
+            fishEyeFilter(pixel_col, distanceToObstacle);
             fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, false);
         }
-        else if((angleRad == SDL_PI_F) || (angleRad == -SDL_PI_F) ||  (angleRad == 0.F))
+        else if((angleRad == SDL_PI_F) || (angleRad == -SDL_PI_F) ||  ((angleDeg < HORIZONTAL_DELTA) && (angleDeg > -HORIZONTAL_DELTA)))
         {
             // Look for the first obstacle
             while(g_map[cellIndex] == 0)
@@ -298,7 +300,7 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
             {
                 std::cout << "unplausible angle" << std::endl;
             }
-            fishEyeFilter(angleToWallNormal, distanceToObstacle);
+            fishEyeFilter(pixel_col, distanceToObstacle);
             fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, false);
         }
         else
