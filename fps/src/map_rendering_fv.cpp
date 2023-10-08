@@ -35,6 +35,7 @@ int32_t computeObjectSize(float_t objectDistance)
     return std::min(static_cast<int32_t>(val),SCREEN_HEIGHT);
 }
 
+// The wall is the screen in front of the player where we project the scene
 float_t getAngleToWallNormal(const int32_t columnIndex)
 {
     float_t wall_width_meter{ DISTANCE_WALL_PLAYER * tanf(HALF_HORIZONTAL_FOV_RAD) * 2 };
