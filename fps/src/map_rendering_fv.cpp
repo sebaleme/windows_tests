@@ -34,7 +34,7 @@ int32_t computeObjectSizeInPixels(float_t objectDistance)
 {
     float_t projectedObjectSize = DIST_PROJPLAN_PLAYER * WALL_HEIGHT / (objectDistance * BEV_CELL_TO_METERS / 50.F);
     // Currently, we assume that the projection plan starts from the ground level
-    VERTICAL_SIZE_PROJPLAN = tanf(static_cast<float_t>(VERTICAL_FOV / 2)) * DIST_PROJPLAN_PLAYER; // meter
+    VERTICAL_SIZE_PROJPLAN = tanf(degToRad(static_cast<float_t>(VERTICAL_FOV / 2))) * DIST_PROJPLAN_PLAYER; // meter
     VERTICAL_INCREMENT = VERTICAL_SIZE_PROJPLAN / SCREEN_HEIGHT;
     float_t numberOfPixels = projectedObjectSize / VERTICAL_INCREMENT;
     return std::min(static_cast<int32_t>(numberOfPixels),SCREEN_HEIGHT);
@@ -50,6 +50,7 @@ float_t getAngleToProjectionPlanNormal(const int32_t columnIndex)
 
 // Using the player´s distance leads to the fisheye effect (except if we project the scene on a sphere). 
 // We need to compute the distance to a screen in front of the player for being able to project on a plane
+// https://lodev.org/cgtutor/raycasting.html
 void fishEyeFilter(const int32_t pixel_col, float_t& distanceToObstacle)
 {
     // Compute cosinus
@@ -170,6 +171,7 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                     ++cell_row;
                     intersecX += cosfAngle*distanceNorthCell;
                     intersecY = static_cast<float_t>(cell_row * CELL_SIZE_PIXELS);
+                    intersectionSide = true;
                     // Cos is negative, but f_player.x is greater than intersectX hence positive distance
                     distanceToObstacle = (intersecX - f_player.x) / cosfAngle;
                 }
@@ -179,6 +181,7 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                     cell_col--;
                     intersecX = static_cast<float_t>((cell_col + 1) * CELL_SIZE_PIXELS);
                     intersecY += sinfAngle*distanceWestCell;
+                    intersectionSide = false;
                     distanceToObstacle = (intersecY - f_player.y) / sinfAngle;
                 }
                 cellIndex = computeCellIndex(cell_row,cell_col);
@@ -209,6 +212,7 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                     intersecX += cosfAngle * distanceSouthCell;
                     // Going down, so intersection is at the top of the downward cell, hence +1
                     intersecY = static_cast<float_t>((cell_row+1) * CELL_SIZE_PIXELS);
+                    intersectionSide = true;
                     distanceToObstacle = (intersecX - f_player.x) / cosfAngle;
                 }
                 else
@@ -217,6 +221,7 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                     ++cell_col;
                     intersecX = static_cast<float_t>(cell_col * CELL_SIZE_PIXELS);
                     intersecY += sinfAngle* distanceEastCell;
+                    intersectionSide = false;
                     distanceToObstacle = (intersecY - f_player.y) / sinfAngle;
                 }
                 cellIndex = computeCellIndex(cell_row,cell_col);
@@ -247,6 +252,7 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                     intersecX += cosfAngle * distanceSouthCell;
                     // Going down, so intersection is at the top of the downward cell, hence +1
                     intersecY = static_cast<float_t>((cell_row + 1) * CELL_SIZE_PIXELS);
+                    intersectionSide = true;
                     // Cos is negative, but f_player.x is greater than intersectX hence positive distance
                     distanceToObstacle = (intersecX - f_player.x) / cosfAngle;
                 }
@@ -257,6 +263,7 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                     // New position is east of the west cell, so intersecX is cell_col+1
                     intersecX = static_cast<float_t>((cell_col+1) * CELL_SIZE_PIXELS);
                     intersecY += sinfAngle * distanceWestCell;
+                    intersectionSide = false;
                     // Sin is negative, but f_player.y is greater than intersectX, so we have a positive distance
                     distanceToObstacle = (intersecY - f_player.y) / sinfAngle;
                 }
@@ -271,10 +278,11 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
         }
         else if ((angleRad == -SDL_PI_F / 2.F) || (angleRad == SDL_PI_F / 2.F))
         {
+            bool lookingNorth = (angleRad == SDL_PI_F / 2.F);
             // Look for the first obstacle
             while (g_map[cellIndex] == 0)
             {
-                cell_row = (angleRad == SDL_PI_F / 2.F) ? cell_row + 1 : cell_row - 1;
+                cell_row = lookingNorth ? cell_row + 1 : cell_row - 1;
                 cellIndex = computeCellIndex(cell_row, cell_col);
             }
             int32_t player_row = static_cast<int32_t>(f_player.y) / CELL_SIZE_PIXELS;
@@ -284,14 +292,14 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                 std::cout << "unplausible angle" << std::endl;
             }
             fishEyeFilter(pixel_col, distanceToObstacle);
-            fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, false);
+            fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, lookingNorth);
         }
         else if((angleRad == SDL_PI_F) || (angleRad == -SDL_PI_F) ||  ((angleDeg < HORIZONTAL_DELTA) && (angleDeg > -HORIZONTAL_DELTA)))
         {
             // Look for the first obstacle
             while(g_map[cellIndex] == 0)
             {
-                cell_col = (angleRad == 0.F) ? cell_col + 1 : cell_col - 1;
+                cell_col = (abs(angleRad) < HORIZONTAL_DELTA) ? cell_col + 1 : cell_col - 1;
                 cellIndex = computeCellIndex(cell_row,cell_col);
             }
             int32_t player_col = static_cast<int32_t>(f_player.x) / CELL_SIZE_PIXELS;
