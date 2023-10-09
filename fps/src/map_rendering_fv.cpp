@@ -286,13 +286,27 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                 cellIndex = computeCellIndex(cell_row, cell_col);
             }
             int32_t player_row = static_cast<int32_t>(f_player.y) / CELL_SIZE_PIXELS;
-            distanceToObstacle = abs(cell_row - player_row) * CELL_SIZE_PIXELS + f_player.y - player_row * CELL_SIZE_PIXELS;
+            // Number of empty cells between the wall and the player.
+            // Minus one for the cell occupied by the player, which is considered in the next line
+            distanceToObstacle = (abs(cell_row - player_row) - 1) * CELL_SIZE_PIXELS;
+            //distanceToObstacle += f_player.y - player_row * CELL_SIZE_PIXELS;
+            if (f_player.x < cell_row * CELL_SIZE_PIXELS)
+            {
+                // Going north
+                distanceToObstacle += (player_row + 1) * CELL_SIZE_PIXELS - f_player.y;
+            }
+            else
+            {
+                // Going south
+                distanceToObstacle += f_player.y - player_row * CELL_SIZE_PIXELS;
+            }
+
             if (distanceToObstacle > SCREEN_MAXDIST)
             {
                 std::cout << "unplausible angle" << std::endl;
             }
             fishEyeFilter(pixel_col, distanceToObstacle);
-            fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, lookingNorth);
+            fillColumn(pixels, pixel_col, cellIndex, distanceToObstacle, true);
         }
         else if((angleRad == SDL_PI_F) || (angleRad == -SDL_PI_F) ||  ((angleDeg < HORIZONTAL_DELTA) && (angleDeg > -HORIZONTAL_DELTA)))
         {
@@ -303,7 +317,18 @@ void construct_world(uint32_t* pixels, const StatePlayer& f_player)
                 cellIndex = computeCellIndex(cell_row,cell_col);
             }
             int32_t player_col = static_cast<int32_t>(f_player.x) / CELL_SIZE_PIXELS;
-            distanceToObstacle = abs(cell_col - player_col) * CELL_SIZE_PIXELS + f_player.x - player_col * CELL_SIZE_PIXELS;
+            distanceToObstacle = (abs(cell_col - player_col) - 1 ) * CELL_SIZE_PIXELS;
+            if (abs(angleDeg) < HORIZONTAL_DELTA)
+            {
+                // Going east
+                distanceToObstacle += (player_col + 1) * CELL_SIZE_PIXELS - f_player.x;
+            }
+            else
+            {
+                // Going west
+                distanceToObstacle += f_player.x - player_col * CELL_SIZE_PIXELS;
+            }
+
             if (distanceToObstacle > SCREEN_MAXDIST)
             {
                 std::cout << "unplausible angle" << std::endl;
